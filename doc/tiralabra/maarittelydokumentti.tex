@@ -1,0 +1,30 @@
+\documentclass[a4paper, 11pt, finnish]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\author{Topi Talvitie}
+\title{frivol: Määrittelydokumentti}
+
+\begin{document}
+\maketitle
+
+Pistejoukon Voronoi-diagrammilla tarkoitetaan tason jakoa maksimaalisiin alueisiin siten, että kaikilla saman alueen pisteillä on sama lähin piste syötepistejoukosta. Voronoi-diagrammin alueet ovat aina monikulmioita, mahdollisesti rajoittamattomia.
+
+Projektissa toteutetaan kirjasto annetun pistejoukon Voronoi-diagrammien laskentaan. Kirjaston nimi on \emph{frivol} eli Friendly Voronoi Diagram Library. Tämän lisäksi toteutetaan ohjelma \emph{frivoltool} joka kirjastoa käyttäen laskee annetun pistejoukon Voronoi-diagrammin ja toinen ohjelma \emph{frivoldraw}, joka osaa piirtää kuvan Voronoi-diagrammista.
+
+\section*{Syöte ja tuloste}
+Kirjaston rajapinta on vain yksi funktio, joka ottaa syötteenä taulukon tason pisteitä ja palauttaa taulukon, jossa on vastaavat Voronoi-diagrammin alueet. Alue sisältää listan alueen rajoitetuista kärkipisteistä, ja mikäli alue on rajoittamaton, myös molempien rajoittamattomien sivujen suuntavektorit. Alueiden sivuihin tallennetaan lisäksi naapurimonikulmioiden indeksit.
+
+\emph{frivoltool} on yksinkertainen ohjelma joka käärii kirjaston funktion komentorivikäyttöön sopivaksi, eli syöte saadaan ja tuloste annetaan merkkijonomuodossa.
+
+\emph{frivoldraw} ottaa syötteen samalla tavalla kuin \emph{frivoltool}, mutta tulosteen kirjoittamisen merkkijonomuodossa sijaan se piirtää siitä kuvan, parametrien mukaan joko suoraan avattavaan ikkunaan tai kuvatiedostoon. Kuvassa näkyy pistejoukko ja Voronoi-diagrammin alueiden reunat.
+
+\section*{Algoritmi}
+
+
+\end{document}
