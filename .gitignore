@@ -15,4 +15,4 @@
 # LaTeX stuff
 *.aux
 *.log
-*.pdf
+*.out
