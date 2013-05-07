@@ -20,8 +20,11 @@
 # CMake stuff
 CMakeCache.txt
 CMakeFiles
-Makefile
 cmake_install.cmake
 
-# Executables
 test/test
+test/Makefile
+doc/doxygen/html/
+doc/doxygen/latex/
+doc/tiralabra/maarittelydokumentti.pdf
+
