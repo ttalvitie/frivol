@@ -26,7 +26,7 @@ Pistejoukon Voronoi-diagrammilla tarkoitetaan tason jakoa maksimaalisiin alueisi
 Projektissa toteutetaan kirjasto annetun pistejoukon Voronoi-diagrammien laskentaan. Kirjaston nimi on \emph{frivol} eli Friendly Voronoi Diagram Library. Tämän lisäksi toteutetaan ohjelma \emph{frivoltool} joka kirjastoa käyttäen laskee annetun pistejoukon Voronoi-diagrammin ja toinen ohjelma \emph{frivoldraw}, joka osaa piirtää kuvan Voronoi-diagrammista.
 
 \section*{Syöte ja tuloste}
-Kirjaston ulkorajapinta on vain yksi funktio, joka ottaa syötteenä taulukon tason pisteitä ja palauttaa taulukon, jossa on vastaavat Voronoi-diagrammin alueet. Alue sisältää listan alueen rajoitetuista kärkipisteistä, ja mikäli alue on rajoittamaton, myös molempien rajoittamattomien sivujen suuntavektorit. Alueiden sivuihin tallennetaan lisäksi naapurimonikulmioiden indeksit.
+Kirjaston ulkorajapinta on vain yksi funktio, joka ottaa syötteenä taulukon tason pisteitä ja palauttaa taulukon, jossa on vastaavat Voronoi-diagrammin alueet. Alueet palautetaan linkitettynä rakenteena, jossa vierekkäiset alueet, särmät ja solmut on aina linkitetty molempiin suuntiin.
 
 \emph{frivoltool} on yksinkertainen ohjelma joka käärii kirjaston funktion komentorivikäyttöön sopivaksi, eli syöte saadaan ja tuloste annetaan merkkijonomuodossa.
 
