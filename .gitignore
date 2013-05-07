@@ -16,3 +16,12 @@
 *.aux
 *.log
 *.out
+
+# CMake stuff
+CMakeCache.txt
+CMakeFiles
+Makefile
+cmake_install.cmake
+
+# Executables
+test/test
