@@ -11,7 +11,7 @@ add_definitions(
 	-DBOOST_TEST_DYN_LINK
 )
 
-file(GLOB TEST_SOURCES test.cpp array.cpp)
+file(GLOB TEST_SOURCES test.cpp array.cpp priority_queue.cpp)
 add_executable(test ${TEST_SOURCES})
 
 target_link_libraries(test ${Boost_LIBRARIES})
