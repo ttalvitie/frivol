@@ -1,4 +1,5 @@
 #include <boost/test/unit_test.hpp>
+#include <boost/mpl/list.hpp>
 
 #include "frivol/priority_queue_concept.hpp"
 
@@ -7,6 +8,10 @@ using namespace frivol;
 BOOST_AUTO_TEST_SUITE(priority_queue)
 
 typedef boost::mpl::list<DummyPriorityQueue<double>> PriorityQueueTypes;
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(implements_concept, PriorityQueue, PriorityQueueTypes) {
+	BOOST_CONCEPT_ASSERT((PriorityQueueConcept<PriorityQueue, double>));
+}
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(set_and_empty_works, PriorityQueue, PriorityQueueTypes) {
 	PriorityQueue q(5);

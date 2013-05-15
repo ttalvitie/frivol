@@ -5,7 +5,6 @@
 #include "array.hpp"
 
 #include <boost/concept_check.hpp>
-#include <boost/variant.hpp>
 #include <boost/optional.hpp>
 
 namespace frivol {
@@ -13,7 +12,7 @@ namespace frivol {
 /// Concept checking class for priority queues X with priority values of type
 /// PriorityT (or NIL). Priority queues are initialized with given size, and
 /// contain priority values for keys 0, 1, ..., size-1. Initially, all priority
-/// values are NIL. C must support the following operations:
+/// values are NIL. X must support the following operations:
 ///  - <construct>(Idx size) creates priority queue for keys 0, 1, ..., size-1.
 ///  - bool empty() const returns true if all keys have NIL priority.
 ///  - Idx pop() returns the key with lowest non-NIL priority and sets the

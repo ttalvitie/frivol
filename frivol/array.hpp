@@ -3,6 +3,8 @@
 
 #include "common.hpp"
 
+#include <boost/concept_check.hpp>
+
 #include <memory>
 #include <stdexcept>
 
@@ -12,6 +14,8 @@ namespace frivol {
 template <typename T>
 class Array {
 public:
+	BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<T>));
+	
 	/// Creates an array with all elements default-constructed.
 	/// @param size The size of the array.
 	Array(Idx size);
@@ -26,6 +30,13 @@ public:
 	
 	/// Returns the size of the array.
 	Idx getSize() const;
+	
+	/// Resizes the array to size. If size decreases the extra elements are
+	/// removed. If size increases, the new elements are default-constructed.
+	/// The operation may assign the current elements to a new place, and
+	/// therefore pointers to the array may be invalidated.
+	/// @param size The new size.
+	void resize(Idx size);
 	
 private:
 	/// The array of elements in the array.

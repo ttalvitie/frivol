@@ -33,4 +33,17 @@ Idx Array<T>::getSize() const {
 	return size_;
 }
 
+template <typename T>
+void Array<T>::resize(Idx size) {
+	BOOST_CONCEPT_ASSERT((boost::Assignable<T>));
+	
+	std::unique_ptr<T[]> new_elements(new T[size]);
+	for(Idx i = 0; i < size_ && i < size; ++i) {
+		new_elements[i] = elements_[i];
+	}
+	
+	size_ = size;
+	elements_ = std::move(new_elements);
+}
+
 }
