@@ -17,12 +17,15 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(basic_insert_erase_empty, SearchTree, SearchTreeTy
 	SearchTree t;
 	BOOST_CHECK(t.empty());
 	t.insert(t.end(), 51);
-	t.insert(t.end(), 1);
+	BOOST_CHECK(!t.empty());
+	t.insert(t.begin(), 1);
 	BOOST_CHECK(!t.empty());
 	t.erase(t.begin());
 	BOOST_CHECK(!t.empty());
 	t.erase(t.begin());
 	BOOST_CHECK(t.empty());
+	t.insert(t.begin(), 5);
+	BOOST_CHECK(!t.empty());
 }
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(iteration_works, SearchTree, SearchTreeTypes) {
