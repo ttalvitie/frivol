@@ -20,6 +20,7 @@ namespace frivol {
 ///  - void setPriority(Idx key, PriorityT priority) sets the priority value of
 ///    'key' to non-NIL value 'priority'.
 ///  - void setPriorityNIL(Idx key) sets the priority value of key 'key' to NIL.
+/// 
 /// X may assume that PriorityT is ordered with <-operator. X may have
 /// undefined behavior if supplied keys are out of range or if pop() is called
 /// when empty() returns true.
@@ -35,11 +36,11 @@ public:
 		sameType(x.pop(), key);
 	}
 	
+private:
 	Idx size;
 	Idx key;
 	PriorityT priority;
 	
-private:
 	/// Function that causes compile time error if called with parameters of
 	/// different types.
 	template <typename T>

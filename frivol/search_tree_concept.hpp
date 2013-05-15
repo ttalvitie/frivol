@@ -26,6 +26,7 @@ namespace frivol {
 ///    should not be invalidated.
 ///  - void insert(Iterator iter, const ElementT& elem) inserts elem before
 ///    iter. Does not invalidate any iterators.
+/// 
 /// X may assume that ElementT is copy constructible.
 template <typename X, typename ElementT>
 class SearchTreeConcept {
@@ -45,9 +46,9 @@ public:
 		x.search([](IteratorT iter) -> int { return 0; });
 	}
 	
+private:
 	ElementT elem;
 	
-private:
 	/// Function that causes compile time error if called with parameters of
 	/// different types.
 	template <typename T>
