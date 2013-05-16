@@ -1,8 +1,7 @@
 #ifndef FRIVOL_POLICY_HPP
 #define FRIVOL_POLICY_HPP
 
-#include "priority_queue_concept.hpp"
-#include "search_tree_concept.hpp"
+#include "geometry_traits.hpp"
 
 namespace frivol {
 
@@ -22,6 +21,8 @@ template <
 >
 struct Policy {
 	BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<CoordT>));
+	BOOST_CONCEPT_ASSERT((boost::LessThanComparable<CoordT>));
+	BOOST_CONCEPT_ASSERT((GeometryTraitsImplementedConcept<CoordT>));
 	
 	typedef CoordT Coord;
 	

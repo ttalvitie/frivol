@@ -1,14 +1,12 @@
 #ifndef FRIVOL_POINT_HPP
 #define FRIVOL_POINT_HPP
 
-#include "policy.hpp"
-
 namespace frivol {
 
 /// Two-dimensional point.
 /// @tparam CoordT The coordinate type to use. Should be default constructible.
-/// Defaults to the coord type of the default policy.
-template <typename CoordT = DefaultPolicy::Coord>
+/// Defaults to double, which is the coordinate type of DefaultPolicy.
+template <typename CoordT = double>
 struct Point {
 	/// Constructs point with given coordinates.
 	/// @param x The X coordinate.
