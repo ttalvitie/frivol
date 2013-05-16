@@ -57,4 +57,16 @@ BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices) {
 	BOOST_CHECK_EQUAL(3, algo.getVoronoiVertexCount());
 }
 
+BOOST_AUTO_TEST_CASE(hourglass_four_voronoi_vertices) {
+	Array<Point<>> sites(5);
+	sites[0] = Point<>(-1, -2);
+	sites[1] = Point<>(1, -2);
+	sites[2] = Point<>(-1, 2);
+	sites[3] = Point<>(1, 2);
+	sites[4] = Point<>(0, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	BOOST_CHECK_EQUAL(4, algo.getVoronoiVertexCount());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
