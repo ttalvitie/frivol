@@ -9,7 +9,7 @@ DummyPriorityQueue<PriorityT>::DummyPriorityQueue(Idx size)
 { }
 
 template <typename PriorityT>
-Idx DummyPriorityQueue<PriorityT>::pop() {
+std::pair<Idx, PriorityT> DummyPriorityQueue<PriorityT>::pop() {
 	Idx best = nil_idx;
 	for(Idx key = 0; key < priorities_.getSize(); ++key) {
 		if(priorities_[key].get_ptr() == nullptr) continue;
@@ -19,8 +19,9 @@ Idx DummyPriorityQueue<PriorityT>::pop() {
 		}
 	}
 	
+	PriorityT best_priority = priorities_[best].get();
 	priorities_[best].reset();
-	return best;
+	return std::make_pair(best, best_priority);
 }
 
 template <typename PriorityT>

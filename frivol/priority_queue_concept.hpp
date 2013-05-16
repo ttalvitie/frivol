@@ -15,8 +15,8 @@ namespace frivol {
 /// values are NIL. X must support the following operations:
 ///  - <construct>(Idx size) creates priority queue for keys 0, 1, ..., size-1.
 ///  - bool empty() const returns true if all keys have NIL priority.
-///  - Idx pop() returns the key with lowest non-NIL priority and sets the
-///    priority of that key to NIL.
+///  - std::pair<Idx, PriorityT> pop() returns pair of a key with lowest non-NIL
+///    priority and its priority and sets the priority to NIL.
 ///  - void setPriority(Idx key, PriorityT priority) sets the priority value of
 ///    'key' to non-NIL value 'priority'.
 ///  - void setPriorityNIL(Idx key) sets the priority value of key 'key' to NIL.
@@ -33,7 +33,7 @@ public:
 		x.setPriorityNIL(key);
 		x.setPriority(key, priority);
 		sameType(x.empty(), bool());
-		sameType(x.pop(), key);
+		sameType(x.pop(), std::pair<Idx, PriorityT>(key, priority));
 	}
 	
 private:
@@ -55,7 +55,7 @@ public:
 	
 	DummyPriorityQueue(Idx size);
 	
-	Idx pop();
+	std::pair<Idx, PriorityT> pop();
 	
 	bool empty() const;
 	

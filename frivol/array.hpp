@@ -10,7 +10,8 @@
 
 namespace frivol {
 
-/// Simple fixed-size array of elements of type T.
+/// Simple fixed-size array.
+/// @tparam T The type of stored elements. Should be default constructible.
 template <typename T>
 class Array {
 public:
