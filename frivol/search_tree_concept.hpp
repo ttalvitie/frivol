@@ -24,8 +24,9 @@ namespace frivol {
 ///    otherwise end() is returned.
 ///  - void erase(Iterator iter) removes element at iter. Other iterators
 ///    should not be invalidated.
-///  - void insert(Iterator iter, const ElementT& elem) inserts elem before
-///    iter. Does not invalidate any iterators.
+///  - Iterators insert(Iterator iter, const ElementT& elem) inserts elem before
+///    iter and returns the iterator of the new element. Does not invalidate any
+///    iterators.
 /// 
 /// X may assume that ElementT is copy constructible.
 template <typename X, typename ElementT>
@@ -42,7 +43,7 @@ public:
 		sameType(x.begin(), iter);
 		sameType(x.end(), iter);
 		x.erase(iter);
-		x.insert(iter, elem);
+		sameType(x.insert(iter, elem), iter);
 		x.search([](IteratorT iter) -> int { return 0; });
 	}
 	

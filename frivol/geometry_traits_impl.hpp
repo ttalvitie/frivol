@@ -62,23 +62,48 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 }
 
 template <typename CoordT>
-CoordT GeometryTraitsFloat<CoordT>::getCircumcenterY(
+CoordT GeometryTraitsFloat<CoordT>::getCircumcircleTopY(
 	const Point<CoordT>& a,
 	const Point<CoordT>& b,
 	const Point<CoordT>& c
 ) {
 	// TODO: clarify and optimize.
-	CoordT num = 
-		-a.x*b.x*b.x-a.x*b.y*b.y+a.x*c.x*c.x+a.x*c.y*c.y+a.x*a.x*b.x-a.x*a.x*c.x
-		+a.y*a.y*b.x-a.y*a.y*c.x-b.x*c.x*c.x-b.x*c.y*c.y+b.x*b.x*c.x+b.y*b.y*c.x;
-	CoordT den = a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x;
+	CoordT x = 0.5 * (
+			-a.y*b.x*b.x+b.x*b.x*c.y-b.y*c.y*c.y+b.y*a.y*a.y+a.y*c.x*c.x-b.y*b.y*a.y
+			-b.y*c.x*c.x+a.x*a.x*b.y-c.y*a.y*a.y+b.y*b.y*c.y-a.x*a.x*c.y+c.y*c.y*a.y
+		) / (
+			a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x
+		);
+	CoordT y = -0.5 * (
+			-a.x*b.x*b.x-a.x*b.y*b.y+a.x*c.x*c.x+a.x*c.y*c.y+a.x*a.x*b.x-a.x*a.x*c.x
+			+a.y*a.y*b.x-a.y*a.y*c.x-b.x*c.x*c.x-b.x*c.y*c.y+b.x*b.x*c.x+b.y*b.y*c.x
+		) / (
+			a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x
+		);
 	
-	CoordT ret = -0.5 * num / den;
+	CoordT dx = x - a.x;
+	CoordT dy = y - a.y;
+	CoordT ret = y + std::sqrt(dx * dx + dy * dy);
 	
 	// In case of 0/0, return infinity.
 	if(std::isnan(ret)) ret = std::numeric_limits<CoordT>::infinity();
 	
 	return ret;
+}
+
+template <typename CoordT>
+bool GeometryTraitsFloat<CoordT>::isCCW(
+	const Point<CoordT>& a,
+	const Point<CoordT>& b,
+	const Point<CoordT>& c
+) {
+	// Orientation can be seen from the sign of the cross product of two sides.
+	CoordT dx1 = b.x - a.x;
+	CoordT dy1 = b.y - a.y;
+	CoordT dx2 = c.x - a.x;
+	CoordT dy2 = c.y - a.y;
+	
+	return dx1 * dy2 > dx2 * dy1;
 }
 
 }

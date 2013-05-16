@@ -21,10 +21,13 @@ struct GeometryTraits { };
 ///    The function may assume that a.x <= b.x, a.y <= topy and b.y <= topy.
 ///    The function should choose the solution where the parabola around a
 ///    goes under the parabola around b.
-///  - CoordT getCircumcenterY(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c)
-///    returns the Y coordinate of the center point of the circumscribed circle
-///    around triangle 'abc'. In case of (almost) collinear points, the result
-///    should be very big or very small compared to site coordinates.
+///  - CoordT getCircumcircleTopY(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c)
+///    returns the Y coordinate of the top point (i.e. highest Y coordinate) of
+///    the circumscribed circle around triangle 'abc'. In case of (almost)
+///    collinear points, the result should be very big or very small compared
+///    to site coordinates.
+///  - bool isCCW(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c) returns true
+///    if triangle 'abc' is oriented counterclockwise.
 /// 
 /// @tparam CoordT The coordinate type.
 template <typename CoordT>
@@ -33,7 +36,8 @@ public:
 	BOOST_CONCEPT_USAGE(GeometryTraitsImplementedConcept) {
 		typedef GeometryTraits<CoordT> Traits;
 		sameType(Traits::getBreakpointX(point, point, coord), coord);
-		sameType(Traits::getCircumcenterY(point, point, point), coord);
+		sameType(Traits::getCircumcircleTopY(point, point, point), coord);
+		sameType(Traits::isCCW(point, point, point), bool());
 	}
 	
 private:
@@ -58,7 +62,13 @@ struct GeometryTraitsFloat {
 		CoordT topy
 	);
 	
-	static CoordT getCircumcenterY(
+	static CoordT getCircumcircleTopY(
+		const Point<CoordT>& a,
+		const Point<CoordT>& b,
+		const Point<CoordT>& c
+	);
+	
+	static bool isCCW(
 		const Point<CoordT>& a,
 		const Point<CoordT>& b,
 		const Point<CoordT>& c

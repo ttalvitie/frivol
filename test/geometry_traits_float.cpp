@@ -51,7 +51,7 @@ BOOST_AUTO_TEST_CASE(circumcenter_basic) {
 	PointT b(1, 1);
 	PointT c(0, 2);
 	
-	BOOST_CHECK_CLOSE(TraitsT::getCircumcenterY(a, b, c), 1, eps);
+	BOOST_CHECK_CLOSE(TraitsT::getCircumcircleTopY(a, b, c), 2, eps);
 }
 
 BOOST_AUTO_TEST_CASE(circumcenter2_basic) {
@@ -59,9 +59,7 @@ BOOST_AUTO_TEST_CASE(circumcenter2_basic) {
 	PointT b(1, 0);
 	PointT c(0.5, 1);
 	
-	// The circumcenter is intersection of x = 0.5 the middle normal of
-	// segment (0, 0) - (0.5, 1), i.e. y = -1/2 x + 5/8.
-	BOOST_CHECK_CLOSE(TraitsT::getCircumcenterY(a, b, c), 0.375, eps);
+	BOOST_CHECK_CLOSE(TraitsT::getCircumcircleTopY(a, b, c), 1, eps);
 }
 
 BOOST_AUTO_TEST_CASE(circumcenter_collinear) {
@@ -69,20 +67,20 @@ BOOST_AUTO_TEST_CASE(circumcenter_collinear) {
 	PointT b(0, 1);
 	PointT c(0, 2);
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcenterY(a, b, c)) > 10000.0);
+	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, b, c)) > 10000.0);
 }
 
 BOOST_AUTO_TEST_CASE(circumcenter_two_incident) {
 	PointT a(0, 0);
 	PointT b(1, 1);
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcenterY(a, b, b)) > 10000.0);
+	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, b, b)) > 10000.0);
 }
 
 BOOST_AUTO_TEST_CASE(circumcenter_all_incident) {
 	PointT a(5, 6);
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcenterY(a, a, a)) > 10000.0);
+	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, a, a)) > 10000.0);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
