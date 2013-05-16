@@ -18,7 +18,9 @@ struct GeometryTraits { };
 ///  - CoordT getBreakpointX(Point<CoordT> a, Point<CoordT> b, CoordT topy)
 ///    returns the X coordinate of intersection of the two parabolas defined by
 ///    (x-a.x)^2 + (y-a.y)^2 = (y-topy)^2 = (x-b.x)^2 + (y-b.y)^2
-///    The result should be between a.x and b.x, a.x <= b.x.
+///    The function may assume that a.x <= b.x, a.y <= topy and b.y <= topy.
+///    The function should choose the solution where the parabola around a
+///    goes under the parabola around b.
 /// 
 /// @tparam CoordT The coordinate type.
 template <typename CoordT>
@@ -49,10 +51,7 @@ struct GeometryTraitsFloat {
 		const Point<CoordT>& a,
 		const Point<CoordT>& b,
 		CoordT topy
-	) {
-		// TODO: implement
-		return 0.5 * (a.x + b.x);
-	}
+	);
 };
 
 template <>
@@ -61,5 +60,7 @@ template <>
 struct GeometryTraits<double> : GeometryTraitsFloat<double> { };
 
 }
+
+#include "geometry_traits_impl.hpp"
 
 #endif
