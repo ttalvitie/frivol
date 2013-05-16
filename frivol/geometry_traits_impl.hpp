@@ -2,11 +2,12 @@
 #define FRIVOL_GEOMETRY_TRAITS_IMPL_HPP
 
 #include <cmath>
+#include <limits>
 
 namespace frivol {
 
 template <typename CoordT>
-double GeometryTraitsFloat<CoordT>::getBreakpointX(
+CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 	const Point<CoordT>& a,
 	const Point<CoordT>& b,
 	CoordT topy
@@ -21,8 +22,8 @@ double GeometryTraitsFloat<CoordT>::getBreakpointX(
 	// Naive equation solution.
 	CoordT x1;
 	{
-		// The equation is A x^2 + B x + C = 0, where.
-		// TODO: clarify and optimize
+		// The equation is A x^2 + B x + C = 0, where
+		// TODO: clarify and optimize.
 		CoordT A = a.y-b.y;
 		CoordT B = -2*a.y*b.x+2*topy*b.x+2*a.x*b.y-2*topy*a.x;
 		CoordT C = 
@@ -58,6 +59,26 @@ double GeometryTraitsFloat<CoordT>::getBreakpointX(
 	} else {
 		return x2;
 	}
+}
+
+template <typename CoordT>
+CoordT GeometryTraitsFloat<CoordT>::getCircumcenterY(
+	const Point<CoordT>& a,
+	const Point<CoordT>& b,
+	const Point<CoordT>& c
+) {
+	// TODO: clarify and optimize.
+	CoordT num = 
+		-a.x*b.x*b.x-a.x*b.y*b.y+a.x*c.x*c.x+a.x*c.y*c.y+a.x*a.x*b.x-a.x*a.x*c.x
+		+a.y*a.y*b.x-a.y*a.y*c.x-b.x*c.x*c.x-b.x*c.y*c.y+b.x*b.x*c.x+b.y*b.y*c.x;
+	CoordT den = a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x;
+	
+	CoordT ret = -0.5 * num / den;
+	
+	// In case of 0/0, return infinity.
+	if(std::isnan(ret)) ret = std::numeric_limits<CoordT>::infinity();
+	
+	return ret;
 }
 
 }

@@ -1,10 +1,6 @@
 #ifndef FRIVOL_FORTUNE_IMPL_HPP
 #define FRIVOL_FORTUNE_IMPL_HPP
 
-#include "priority_queue_concept.hpp"
-#include "search_tree_concept.hpp"
-#include "stack.hpp"
-
 namespace frivol {
 namespace fortune {
 
@@ -79,24 +75,56 @@ std::pair<bool, Idx> Algorithm<PolicyT>::getEventInfo_(Idx event_key) {
 
 template <typename PolicyT>
 void Algorithm<PolicyT>::handleSiteEvent_(Idx site) {
-	// TODO: implement
-/*
-	// There should be available arc IDs.
-	assert(!free_arc_ids_.empty());
-	
 	// Allocate an arc id for the new arc.
+	assert(!free_arc_ids_.empty());
 	Idx arc_id = free_arc_ids_.top();
 	free_arc_ids_.pop();
 	
-	// Search for the right arc on which to place the new ar.
-	BeachLineItertorT base = search([&](BeachLineItertorT iter) {
+	// If the beach line is empty, the new arc is the only arc.
+	if(beach_line_.empty()) {
+		beach_line_.insert(beach_line_.end(), Arc{site, arc_id});
+		return;
+	}
+	
+	// Otherwise, search for the right arc on which to place the new arc.
+	BeachLineIteratorT base = beach_line_.search([&](BeachLineIteratorT iter) {
 		if(iter != beach_line_.begin()) {
-			BeachLineItertorT left = iter;
+			BeachLineIteratorT left = iter;
 			--left;
 			
+			CoordT breakpoint_x =
+				GeometryTraitsT::getBreakpointX(sites_[left->site], sites_[iter->site], y_);
+			if(sites_[site].x < breakpoint_x) {
+				return -1;
+			}
 		}
+		
+		BeachLineIteratorT right = iter;
+		++right;
+		if(right != beach_line_.end()) {
+			CoordT breakpoint_x =
+				GeometryTraitsT::getBreakpointX(sites_[iter->site], sites_[right->site], y_);
+			if(sites_[site].x > breakpoint_x) {
+				return 1;
+			}
+		}
+		
+		return 0;
 	});
-*/
+	
+	assert(base != beach_line_.end());
+	
+	// The possible circle event around base is false alarm.
+	event_queue_.setPriorityNIL(getCircleEventKey_(base->arc_id));
+	
+	// Add the new arc in the middle of arc in base.
+	assert(!free_arc_ids_.empty());
+	Idx left_arc_id = free_arc_ids_.top();
+	free_arc_ids_.pop();
+	beach_line_.insert(base, Arc{base->site, left_arc_id});
+	beach_line_.insert(base, Arc{site, arc_id});
+	
+	// TODO: add circle events.
 }
 
 template <typename PolicyT>

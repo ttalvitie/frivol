@@ -3,6 +3,7 @@
 
 #include "priority_queue_concept.hpp"
 #include "search_tree_concept.hpp"
+#include "geometry_traits.hpp"
 #include "stack.hpp"
 
 namespace frivol {
@@ -10,8 +11,8 @@ namespace fortune {
 
 /// Information of an arc in the beach line.
 struct Arc {
-	Idx site; ///< The site from which the arc originates.
-	Idx id;   ///< The ID of the arc.
+	Idx site;   ///< The site from which the arc originates.
+	Idx arc_id; ///< The ID of the arc.
 };
 
 /// State of Fortune's algorithm.
@@ -49,28 +50,8 @@ private:
 	typedef typename PolicyT::template EventQueue<CoordT> EventQueueT;
 	BOOST_CONCEPT_ASSERT((PriorityQueueConcept<EventQueueT, CoordT>));
 	
-	Idx n_;                      ///< Number of sites.
-	const Array<PointT>& sites_; ///< The input set of point sites.
+	typedef GeometryTraits<CoordT> GeometryTraitsT;
 	
-	/// The y coordinate of last step. Undefined value if step has not been
-	/// called.
-	CoordT y_;
-	
-	/// The beach line of arcs ordered by X.
-	BeachLineT beach_line_;
-	
-	/// The event queue of site events and circle events.
-	/// @see getCircleEventKey, getSiteEventKey, getEventInfo
-	EventQueueT event_queue_;
-	
-	/// Mapping from beach line arc IDs to their corresponding iterators
-	/// in beach_line_. Every arc in the beach line has an unique ID in
-	/// 0..2n-2, for use with events_. The free IDs are stored in free_arc_ids_.
-	Array<BeachLineIteratorT> arc_iterators_by_id_;
-	
-	/// Currently free beach line IDs in 0..2n-2. Guaranteed to contain enough
-	/// IDs because it is known that beach line consists of at most 2n-1 arcs.
-	Stack<Idx> free_arc_ids_;
 	
 	/// Get the event queue key for circle event of given arc.
 	/// @param arc_id The id of the arc.
@@ -95,6 +76,30 @@ private:
 	/// Handle circle event.
 	/// @param arc_id The ID of the arc.
 	void handleCircleEvent_(Idx circle);
+	
+	
+	Idx n_;                      ///< Number of sites.
+	const Array<PointT>& sites_; ///< The input set of point sites.
+	
+	/// The y coordinate of last step. Undefined value if step has not been
+	/// called.
+	CoordT y_;
+	
+	/// The beach line of arcs ordered by X.
+	BeachLineT beach_line_;
+	
+	/// The event queue of site events and circle events.
+	/// @see getCircleEventKey, getSiteEventKey, getEventInfo
+	EventQueueT event_queue_;
+	
+	/// Mapping from beach line arc IDs to their corresponding iterators
+	/// in beach_line_. Every arc in the beach line has an unique ID in
+	/// 0..2n-2, for use with events_. The free IDs are stored in free_arc_ids_.
+	Array<BeachLineIteratorT> arc_iterators_by_id_;
+	
+	/// Currently free beach line IDs in 0..2n-2. Guaranteed to contain enough
+	/// IDs because it is known that beach line consists of at most 2n-1 arcs.
+	Stack<Idx> free_arc_ids_;
 };
 
 }

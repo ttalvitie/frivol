@@ -21,6 +21,10 @@ struct GeometryTraits { };
 ///    The function may assume that a.x <= b.x, a.y <= topy and b.y <= topy.
 ///    The function should choose the solution where the parabola around a
 ///    goes under the parabola around b.
+///  - CoordT getCircumcenterY(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c)
+///    returns the Y coordinate of the center point of the circumscribed circle
+///    around triangle 'abc'. In case of (almost) collinear points, the result
+///    should be very big or very small compared to site coordinates.
 /// 
 /// @tparam CoordT The coordinate type.
 template <typename CoordT>
@@ -29,6 +33,7 @@ public:
 	BOOST_CONCEPT_USAGE(GeometryTraitsImplementedConcept) {
 		typedef GeometryTraits<CoordT> Traits;
 		sameType(Traits::getBreakpointX(point, point, coord), coord);
+		sameType(Traits::getCircumcenterY(point, point, point), coord);
 	}
 	
 private:
@@ -47,10 +52,16 @@ private:
 /// (float and double).
 template <typename CoordT>
 struct GeometryTraitsFloat {
-	static double getBreakpointX(
+	static CoordT getBreakpointX(
 		const Point<CoordT>& a,
 		const Point<CoordT>& b,
 		CoordT topy
+	);
+	
+	static CoordT getCircumcenterY(
+		const Point<CoordT>& a,
+		const Point<CoordT>& b,
+		const Point<CoordT>& c
 	);
 };
 
