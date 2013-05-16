@@ -8,4 +8,5 @@ cp ../doxygen/latex/refman.pdf .
 for i in 1 2
 do
 	pdflatex maarittelydokumentti.tex
+	pdflatex viikkoraportti1.tex
 done
