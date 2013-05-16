@@ -20,6 +20,13 @@ BOOST_AUTO_TEST_CASE(breakpoint_horizontal_sites) {
 	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, 0.3), x, eps);
 	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, 1), x, eps);
 }
+BOOST_AUTO_TEST_CASE(breakpoint_almost_horizontal_sites) {
+	PointT a(0, 0);
+	PointT b(1, 0.05 * eps);
+	float x = 0.5;
+	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, 0.3), x, eps);
+	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, 1), x, eps);
+}
 
 BOOST_AUTO_TEST_CASE(breakpoint_vertical_sites) {
 	PointT a(1, 0);
