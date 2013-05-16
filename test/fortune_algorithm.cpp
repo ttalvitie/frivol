@@ -1,6 +1,8 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 
+#include <cmath>
+
 #include "frivol/fortune.hpp"
 
 using namespace frivol;
@@ -67,6 +69,20 @@ BOOST_AUTO_TEST_CASE(hourglass_four_voronoi_vertices) {
 	fortune::Algorithm<> algo(sites);
 	algo.finish();
 	BOOST_CHECK_EQUAL(4, algo.getVoronoiVertexCount());
+}
+
+BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_vertices) {
+	int n = 341;
+	Array<Point<>> sites(n + 1);
+	double twopi = 8 * std::atan(1.0);
+	for(int i = 0; i < n; ++i) {
+		double angle = i * twopi / n;
+		sites[i] = Point<>(std::cos(angle), std::sin(angle));
+	}
+	sites[n] = Point<>(0, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	BOOST_CHECK_EQUAL(n, algo.getVoronoiVertexCount());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
