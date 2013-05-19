@@ -1,11 +1,8 @@
-#ifndef FRIVOL_FORTUNE_IMPL_HPP
-#define FRIVOL_FORTUNE_IMPL_HPP
-
 namespace frivol {
 namespace fortune {
 
 template <typename PolicyT>
-Algorithm<PolicyT>::Algorithm(const Array<PointT>& sites)
+Algorithm<PolicyT>::Algorithm(const containers::Array<PointT>& sites)
 	: n_(sites.getSize()),
 	  sites_(sites),
 	  event_queue_(3 * n_ - 1),
@@ -209,5 +206,3 @@ void Algorithm<PolicyT>::handleCircleEvent_(Idx arc_id) {
 
 }
 }
-
-#endif

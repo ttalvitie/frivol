@@ -1,9 +1,9 @@
 #ifndef FRIVOL_GEOMETRY_TRAITS_HPP
 #define FRIVOL_GEOMETRY_TRAITS_HPP
 
-#include "priority_queue_concept.hpp"
-#include "search_tree_concept.hpp"
-#include "point.hpp"
+#include <frivol/containers/priority_queue_concept.hpp>
+#include <frivol/containers/search_tree_concept.hpp>
+#include <frivol/point.hpp>
 
 namespace frivol {
 

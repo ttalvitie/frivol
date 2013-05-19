@@ -3,14 +3,14 @@
 
 #include <cmath>
 
-#include "frivol/fortune.hpp"
+#include <frivol/fortune.hpp>
 
 using namespace frivol;
 
 BOOST_AUTO_TEST_SUITE(fortune_algorithm)
 
 BOOST_AUTO_TEST_CASE(two_horizontal_sites_zero_voronoi_vertices) {
-	Array<Point<>> sites(2);
+	containers::Array<Point<>> sites(2);
 	sites[0] = Point<>(0, 0);
 	sites[1] = Point<>(1, 0);
 	fortune::Algorithm<> algo(sites);
@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(two_horizontal_sites_zero_voronoi_vertices) {
 }
 
 BOOST_AUTO_TEST_CASE(two_vertical_sites_zero_voronoi_vertices) {
-	Array<Point<>> sites(2);
+	containers::Array<Point<>> sites(2);
 	sites[0] = Point<>(4, 3);
 	sites[1] = Point<>(4, 4);
 	fortune::Algorithm<> algo(sites);
@@ -28,7 +28,7 @@ BOOST_AUTO_TEST_CASE(two_vertical_sites_zero_voronoi_vertices) {
 }
 
 BOOST_AUTO_TEST_CASE(sites_in_triangle_one_voronoi_vertex) {
-	Array<Point<>> sites(3);
+	containers::Array<Point<>> sites(3);
 	sites[0] = Point<>(0, 0);
 	sites[1] = Point<>(2, 0);
 	sites[2] = Point<>(1, 1);
@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(sites_in_triangle_one_voronoi_vertex) {
 }
 
 BOOST_AUTO_TEST_CASE(diamond_two_voronoi_vertices) {
-	Array<Point<>> sites(4);
+	containers::Array<Point<>> sites(4);
 	sites[0] = Point<>(-2, 0);
 	sites[1] = Point<>(2, 0);
 	sites[2] = Point<>(0, -1);
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(diamond_two_voronoi_vertices) {
 }
 
 BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices) {
-	Array<Point<>> sites(4);
+	containers::Array<Point<>> sites(4);
 	sites[0] = Point<>(-1, 0);
 	sites[1] = Point<>(1, 0);
 	sites[2] = Point<>(0, 1);
@@ -60,7 +60,7 @@ BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices) {
 }
 
 BOOST_AUTO_TEST_CASE(hourglass_four_voronoi_vertices) {
-	Array<Point<>> sites(5);
+	containers::Array<Point<>> sites(5);
 	sites[0] = Point<>(-1, -2);
 	sites[1] = Point<>(1, -2);
 	sites[2] = Point<>(-1, 2);
@@ -73,7 +73,7 @@ BOOST_AUTO_TEST_CASE(hourglass_four_voronoi_vertices) {
 
 BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_vertices) {
 	int n = 341;
-	Array<Point<>> sites(n + 1);
+	containers::Array<Point<>> sites(n + 1);
 	double twopi = 8 * std::atan(1.0);
 	for(int i = 0; i < n; ++i) {
 		double angle = i * twopi / n;

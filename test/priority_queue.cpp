@@ -1,9 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 
-#include "frivol/priority_queue_concept.hpp"
+#include <frivol/containers/priority_queue_concept.hpp>
+
+#include <frivol/containers/priority_queues/dummy_priority_queue.hpp>
 
 using namespace frivol;
+using namespace frivol::containers;
+using namespace frivol::containers::priority_queues;
 
 BOOST_AUTO_TEST_SUITE(priority_queue)
 

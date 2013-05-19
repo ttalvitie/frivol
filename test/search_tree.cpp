@@ -1,9 +1,13 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/mpl/list.hpp>
 
-#include "frivol/search_tree_concept.hpp"
+#include <frivol/containers/search_tree_concept.hpp>
+
+#include <frivol/containers/search_trees/dummy_search_tree.hpp>
 
 using namespace frivol;
+using namespace frivol::containers;
+using namespace frivol::containers::search_trees;
 
 BOOST_AUTO_TEST_SUITE(search_tree)
 

@@ -1,9 +1,5 @@
-#ifndef FRIVOL_STACK_IMPL_HPP
-#define FRIVOL_STACK_IMPL_HPP
-
-#include "array.hpp"
-
 namespace frivol {
+namespace containers {
 
 template <typename T>
 Stack<T>::Stack()
@@ -36,5 +32,4 @@ void Stack<T>::push(const T& element) {
 }
 
 }
-
-#endif
+}

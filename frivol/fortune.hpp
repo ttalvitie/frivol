@@ -1,11 +1,11 @@
 #ifndef FRIVOL_FORTUNE_HPP
 #define FRIVOL_FORTUNE_HPP
 
-#include "priority_queue_concept.hpp"
-#include "search_tree_concept.hpp"
-#include "geometry_traits.hpp"
-#include "stack.hpp"
-#include "policy.hpp"
+#include <frivol/containers/priority_queue_concept.hpp>
+#include <frivol/containers/search_tree_concept.hpp>
+#include <frivol/containers/stack.hpp>
+#include <frivol/geometry_traits.hpp>
+#include <frivol/policy.hpp>
 
 namespace frivol {
 namespace fortune {
@@ -27,7 +27,7 @@ public:
 	/// Constructs algorithm state.
 	/// @param points Reference to the input set of sites. The object must
 	/// exist throughout the existence of the Algorithm.
-	Algorithm(const Array<PointT>& sites);
+	Algorithm(const containers::Array<PointT>& sites);
 	
 	/// Run the algorithm one event handling forward.
 	void step();
@@ -48,10 +48,10 @@ public:
 private:
 	typedef typename PolicyT::template BeachLine<Arc> BeachLineT;
 	typedef typename BeachLineT::Iterator BeachLineIteratorT;
-	BOOST_CONCEPT_ASSERT((SearchTreeConcept<BeachLineT, Arc>));
+	BOOST_CONCEPT_ASSERT((containers::SearchTreeConcept<BeachLineT, Arc>));
 	
 	typedef typename PolicyT::template EventQueue<CoordT> EventQueueT;
-	BOOST_CONCEPT_ASSERT((PriorityQueueConcept<EventQueueT, CoordT>));
+	BOOST_CONCEPT_ASSERT((containers::PriorityQueueConcept<EventQueueT, CoordT>));
 	
 	typedef GeometryTraits<CoordT> GeometryTraitsT;
 	
@@ -97,8 +97,8 @@ private:
 	void handleCircleEvent_(Idx arc_id);
 	
 	
-	Idx n_;                      ///< Number of sites.
-	const Array<PointT>& sites_; ///< The input set of point sites.
+	Idx n_;                                  ///< Number of sites.
+	const containers::Array<PointT>& sites_; ///< The input set of point sites.
 	
 	/// The y coordinate of last step. Undefined value if step has not been
 	/// called.
@@ -115,11 +115,11 @@ private:
 	/// Mapping from beach line arc IDs to their corresponding iterators
 	/// in beach_line_. Every arc in the beach line has an unique ID in
 	/// 0..2n-2, for use with events_. The free IDs are stored in free_arc_ids_.
-	Array<BeachLineIteratorT> arc_iterators_by_id_;
+	containers::Array<BeachLineIteratorT> arc_iterators_by_id_;
 	
 	/// Currently free beach line IDs in 0..2n-2. Guaranteed to contain enough
 	/// IDs because it is known that beach line consists of at most 2n-1 arcs.
-	Stack<Idx> free_arc_ids_;
+	containers::Stack<Idx> free_arc_ids_;
 	
 	/// Number of voronoi vertices met.
 	int voronoi_vertex_count_;

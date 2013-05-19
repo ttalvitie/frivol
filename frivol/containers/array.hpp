@@ -1,7 +1,7 @@
-#ifndef FRIVOL_ARRAY_HPP
-#define FRIVOL_ARRAY_HPP
+#ifndef FRIVOL_CONTAINERS_ARRAY_HPP
+#define FRIVOL_CONTAINERS_ARRAY_HPP
 
-#include "common.hpp"
+#include <frivol/common.hpp>
 
 #include <boost/concept_check.hpp>
 
@@ -9,6 +9,7 @@
 #include <stdexcept>
 
 namespace frivol {
+namespace containers {
 
 /// Simple fixed-size array.
 /// @tparam T The type of stored elements. Should be default constructible.
@@ -47,6 +48,7 @@ private:
 	Idx size_;
 };
 
+}
 }
 
 #include "array_impl.hpp"

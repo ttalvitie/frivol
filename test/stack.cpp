@@ -1,8 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
-#include "frivol/stack.hpp"
+#include <frivol/containers/stack.hpp>
 
 using namespace frivol;
+using namespace frivol::containers;
 
 BOOST_AUTO_TEST_SUITE(stack)
 

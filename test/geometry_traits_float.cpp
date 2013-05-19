@@ -1,7 +1,7 @@
 #include <boost/test/unit_test.hpp>
 
-#include "frivol/geometry_traits.hpp"
-#include "frivol/point.hpp"
+#include <frivol/geometry_traits.hpp>
+#include <frivol/point.hpp>
 
 using namespace frivol;
 

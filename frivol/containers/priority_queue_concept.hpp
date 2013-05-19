@@ -1,13 +1,11 @@
-#ifndef FRIVOL_PRIORITY_QUEUE_CONCEPT_HPP
-#define FRIVOL_PRIORITY_QUEUE_CONCEPT_HPP
+#ifndef FRIVOL_CONTAINERS_PRIORITY_QUEUE_CONCEPT_HPP
+#define FRIVOL_CONTAINERS_PRIORITY_QUEUE_CONCEPT_HPP
 
-#include "common.hpp"
-#include "array.hpp"
-
+#include <frivol/common.hpp>
 #include <boost/concept_check.hpp>
-#include <boost/optional.hpp>
 
 namespace frivol {
+namespace containers {
 
 /// Concept checking class for priority queues X with priority values of type
 /// PriorityT (or NIL). Priority queues are initialized with given size, and
@@ -47,30 +45,7 @@ private:
 	void sameType(const T&, const T&);
 };
 
-/// Simple implementation of PriorityQueueConcept.
-template <typename PriorityT>
-class DummyPriorityQueue {
-public:
-	BOOST_CONCEPT_ASSERT((boost::LessThanComparable<PriorityT>));
-	
-	DummyPriorityQueue(Idx size);
-	
-	std::pair<Idx, PriorityT> pop();
-	
-	bool empty() const;
-	
-	void setPriority(Idx key, PriorityT priority);
-	void setPriorityNIL(Idx key);
-	
-private:
-	typedef boost::optional<PriorityT> OptionalPriorityT;
-	
-	/// Array of priority values (empty in case of NIL).
-	Array<OptionalPriorityT> priorities_;
-};
-
 }
-
-#include "priority_queue_concept_impl.hpp"
+}
 
 #endif

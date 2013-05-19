@@ -1,4 +1,5 @@
 namespace frivol {
+namespace containers {
 
 template <typename T>
 Array<T>::Array(Idx size)
@@ -46,4 +47,5 @@ void Array<T>::resize(Idx size) {
 	elements_ = std::move(new_elements);
 }
 
+}
 }

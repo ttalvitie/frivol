@@ -1,7 +1,6 @@
-#ifndef FRIVOL_PRIORITY_QUEUE_CONCEPT_IMPL_HPP
-#define FRIVOL_PRIORITY_QUEUE_CONCEPT_IMPL_HPP
-
 namespace frivol {
+namespace containers {
+namespace priority_queues {
 
 template <typename PriorityT>
 DummyPriorityQueue<PriorityT>::DummyPriorityQueue(Idx size)
@@ -43,5 +42,5 @@ void DummyPriorityQueue<PriorityT>::setPriorityNIL(Idx key) {
 }
 
 }
-
-#endif
+}
+}

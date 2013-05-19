@@ -1,8 +1,9 @@
 #include <boost/test/unit_test.hpp>
 
-#include "frivol/array.hpp"
+#include "frivol/containers/array.hpp"
 
 using namespace frivol;
+using namespace frivol::containers;
 
 BOOST_AUTO_TEST_SUITE(array)
 

@@ -1,7 +1,9 @@
 #ifndef FRIVOL_POLICY_HPP
 #define FRIVOL_POLICY_HPP
 
-#include "geometry_traits.hpp"
+#include <frivol/containers/priority_queue_concept.hpp>
+#include <frivol/containers/search_tree_concept.hpp>
+#include <frivol/geometry_traits.hpp>
 
 namespace frivol {
 
@@ -35,7 +37,11 @@ struct Policy {
 
 /// The default policy using double as coordinate type and the (currently) best
 /// data structures.
-typedef Policy<double, DummyPriorityQueue, DummySearchTree> DefaultPolicy;
+typedef Policy<
+	double,
+	containers::DummyPriorityQueue,
+	containers::DummySearchTree
+> DefaultPolicy;
 
 }
 

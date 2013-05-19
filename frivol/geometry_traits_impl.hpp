@@ -1,6 +1,3 @@
-#ifndef FRIVOL_GEOMETRY_TRAITS_IMPL_HPP
-#define FRIVOL_GEOMETRY_TRAITS_IMPL_HPP
-
 #include <cmath>
 #include <limits>
 
@@ -107,5 +104,3 @@ bool GeometryTraitsFloat<CoordT>::isCCW(
 }
 
 }
-
-#endif

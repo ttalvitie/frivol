@@ -1,9 +1,11 @@
-#ifndef FRIVOL_STACK_HPP
-#define FRIVOL_STACK_HPP
+#ifndef FRIVOL_CONTAINERS_STACK_HPP
+#define FRIVOL_CONTAINERS_STACK_HPP
 
-#include "array.hpp"
+#include <frivol/common.hpp>
+#include <frivol/containers/array.hpp>
 
 namespace frivol {
+namespace containers {
 
 /// Stack of elements.
 /// @tparam T The type of stored elements. Should be default constructible.
@@ -37,6 +39,7 @@ private:
 	Idx size_;
 };
 
+}
 }
 
 #include "stack_impl.hpp"
