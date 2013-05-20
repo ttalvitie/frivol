@@ -3,6 +3,10 @@
 
 #include <frivol/containers/priority_queue_concept.hpp>
 #include <frivol/containers/search_tree_concept.hpp>
+
+#include <frivol/containers/priority_queues/dummy_priority_queue.hpp>
+#include <frivol/containers/search_trees/dummy_search_tree.hpp>
+
 #include <frivol/geometry_traits.hpp>
 
 namespace frivol {
@@ -18,8 +22,8 @@ namespace frivol {
 /// Must conform to SearchTreeConcept.
 template <
 	typename CoordT,
-	template <typename PriorityT> class EventQueueT,
-	template <typename ElementT> class BeachLineT
+	template <typename PriorityT> class EventPriorityQueueT,
+	template <typename ElementT> class BeachLineSearchTreeT
 >
 struct Policy {
 	BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<CoordT>));
@@ -29,18 +33,18 @@ struct Policy {
 	typedef CoordT Coord;
 	
 	template <typename PriorityT>
-	using EventQueue = EventQueueT<PriorityT>;
+	using EventPriorityQueue = EventPriorityQueueT<PriorityT>;
 	
 	template <typename ElementT>
-	using BeachLine = BeachLineT<ElementT>;
+	using BeachLineSearchTree = BeachLineSearchTreeT<ElementT>;
 };
 
 /// The default policy using double as coordinate type and the (currently) best
 /// data structures.
 typedef Policy<
 	double,
-	containers::DummyPriorityQueue,
-	containers::DummySearchTree
+	containers::priority_queues::DummyPriorityQueue,
+	containers::search_trees::DummySearchTree
 > DefaultPolicy;
 
 }

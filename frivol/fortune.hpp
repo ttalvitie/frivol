@@ -46,12 +46,12 @@ public:
 	int getVoronoiVertexCount() const;
 	
 private:
-	typedef typename PolicyT::template BeachLine<Arc> BeachLineT;
-	typedef typename BeachLineT::Iterator BeachLineIteratorT;
-	BOOST_CONCEPT_ASSERT((containers::SearchTreeConcept<BeachLineT, Arc>));
+	typedef typename PolicyT::template BeachLineSearchTree<Arc> BeachLineSearchTreeT;
+	typedef typename BeachLineSearchTreeT::Iterator BeachLineIteratorT;
+	BOOST_CONCEPT_ASSERT((containers::SearchTreeConcept<BeachLineSearchTreeT, Arc>));
 	
-	typedef typename PolicyT::template EventQueue<CoordT> EventQueueT;
-	BOOST_CONCEPT_ASSERT((containers::PriorityQueueConcept<EventQueueT, CoordT>));
+	typedef typename PolicyT::template EventPriorityQueue<CoordT> EventPriorityQueueT;
+	BOOST_CONCEPT_ASSERT((containers::PriorityQueueConcept<EventPriorityQueueT, CoordT>));
 	
 	typedef GeometryTraits<CoordT> GeometryTraitsT;
 	
@@ -105,12 +105,12 @@ private:
 	CoordT y_;
 	
 	/// The beach line of arcs ordered by X.
-	BeachLineT beach_line_;
+	BeachLineSearchTreeT beach_line_;
 	
 	/// The event queue of site events and circle events. The event keys
 	/// can be translated with #getCircleEventKey_, #getSiteEventKey_ and
 	/// #getEventInfo_.
-	EventQueueT event_queue_;
+	EventPriorityQueueT event_queue_;
 	
 	/// Mapping from beach line arc IDs to their corresponding iterators
 	/// in beach_line_. Every arc in the beach line has an unique ID in
