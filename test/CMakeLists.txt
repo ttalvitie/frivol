@@ -11,7 +11,16 @@ add_definitions(
 	-DBOOST_TEST_DYN_LINK
 )
 
-file(GLOB TEST_SOURCES test.cpp array.cpp priority_queue.cpp search_tree.cpp stack.cpp geometry_traits_float.cpp fortune_algorithm.cpp)
+file(
+	GLOB TEST_SOURCES
+	test.cpp
+	containers/array.cpp
+	containers/priority_queue.cpp
+	containers/search_tree.cpp
+	containers/stack.cpp
+	geometry_traits_float.cpp 
+	fortune_algorithm.cpp
+)
 add_executable(test ${TEST_SOURCES})
 
 target_link_libraries(test ${Boost_LIBRARIES})
