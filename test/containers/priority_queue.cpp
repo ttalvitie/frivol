@@ -36,4 +36,20 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(pop_works, PriorityQueue, PriorityQueueTypes) {
 	BOOST_CHECK(q.empty());
 }
 
+
+BOOST_AUTO_TEST_CASE_TEMPLATE(basic, PriorityQueue, PriorityQueueTypes) {
+	PriorityQueue q(15);
+	q.setPriority(2, 5.55);
+	q.setPriority(5, -351);
+	q.setPriority(7, 7);
+	BOOST_CHECK(q.pop() == (std::pair<Idx, double>(5, -351)));
+	q.setPriority(1, 2);
+	q.setPriority(13, 4);
+	BOOST_CHECK(q.pop() == (std::pair<Idx, double>(1, 2)));
+	BOOST_CHECK(q.pop() == (std::pair<Idx, double>(13, 4)));
+	q.setPriorityNIL(2);
+	BOOST_CHECK(q.pop() == (std::pair<Idx, double>(7, 7)));
+	BOOST_CHECK(q.empty());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
