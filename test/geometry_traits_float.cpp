@@ -48,6 +48,24 @@ BOOST_AUTO_TEST_CASE(breakpoint_equal_sites) {
 	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, a, 4, true), a.x, eps);
 }
 
+BOOST_AUTO_TEST_CASE(breakpoint_right_infinity) {
+	PointT a(0, 0);
+	PointT b(1, 0);
+	
+	BOOST_CHECK(TraitsT::getBreakpointX(b, a, 3, false) < -100000.0);
+	BOOST_CHECK(TraitsT::getBreakpointX(b, a, 3, true) > 100000.0);
+}
+
+BOOST_AUTO_TEST_CASE(breakpoint_basic) {
+	PointT a(3, 5);
+	PointT b(10, 3);
+	float y = 11;
+	
+	// Solved (x-3)^2 + (y-5)^2 = (y-11)^2 = (x-10)^2 + (y-3)^2 with Maple
+	// to obtain the following solution.
+	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, y, false), 7.219, eps);
+}
+
 BOOST_AUTO_TEST_CASE(circumcenter_basic) {
 	PointT a(0, 0);
 	PointT b(1, 1);
