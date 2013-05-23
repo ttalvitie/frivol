@@ -60,8 +60,7 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 	if(B > 0.0) {
 		x = (-B - std::sqrt(discriminant)) / (2 * A);
 	} else {
-		CoordT other_solution = (-B + std::sqrt(discriminant)) / (2 * A);
-		x = C / (A * other_solution);
+		x = 2 * C / (-B + std::sqrt(discriminant));
 	}
 	
 	// Move the solution back to the original case.

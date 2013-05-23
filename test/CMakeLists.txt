@@ -19,6 +19,7 @@ file(
 	containers/search_tree.cpp
 	containers/stack.cpp
 	fortune/fortune_algorithm.cpp
+	fortune/beach_line.cpp
 	geometry_traits_float.cpp 
 )
 add_executable(test ${TEST_SOURCES})

@@ -47,8 +47,8 @@ public:
 	/// @param sweepline_y The Y-coordinate of the sweep line that defines the
 	/// parabolas.
 	/// @returns pair consisting of the ID of the new arc and the ID of the arc
-	/// on which it was placed and that was split in two, or nil_idx if the
-	/// beach line was empty.
+	/// on which it was placed and that was split in two (the returned part being
+	/// on the right of the new arc), or nil_idx if the beach line was empty.
 	/// @throws std::logic_error if the maximum number of arcs (getMaxArcCount())
 	/// are already in use.
 	std::pair<Idx, Idx> insertArc(Idx site, const CoordT& sweepline_y);
