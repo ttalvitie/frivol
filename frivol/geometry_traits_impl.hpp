@@ -5,8 +5,8 @@ namespace frivol {
 
 template <typename CoordT>
 CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
-	const Point<CoordT>& a,
-	const Point<CoordT>& b,
+	const PointT& a,
+	const PointT& b,
 	CoordT topy,
 	bool positive_big
 ) {
@@ -69,10 +69,10 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 }
 
 template <typename CoordT>
-CoordT GeometryTraitsFloat<CoordT>::getCircumcircleTopY(
-	const Point<CoordT>& a,
-	const Point<CoordT>& b,
-	const Point<CoordT>& c
+Point<CoordT> GeometryTraitsFloat<CoordT>::getCircumcenter(
+	const PointT& a,
+	const PointT& b,
+	const PointT& c
 ) {
 	// TODO: clarify and optimize.
 	CoordT x = 0.5 * (
@@ -88,9 +88,20 @@ CoordT GeometryTraitsFloat<CoordT>::getCircumcircleTopY(
 			a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x
 		);
 	
-	CoordT dx = x - a.x;
-	CoordT dy = y - a.y;
-	CoordT ret = y + std::sqrt(dx * dx + dy * dy);
+	return PointT(x, y);
+}
+
+template <typename CoordT>
+CoordT GeometryTraitsFloat<CoordT>::getCircumcircleTopY(
+	const PointT& a,
+	const PointT& b,
+	const PointT& c
+) {
+	PointT center = getCircumcenter(a, b, c);
+	
+	CoordT dx = center.x - a.x;
+	CoordT dy = center.y - a.y;
+	CoordT ret = center.y + std::sqrt(dx * dx + dy * dy);
 	
 	// In case of 0/0, return infinity.
 	if(std::isnan(ret)) ret = std::numeric_limits<CoordT>::infinity();
@@ -100,9 +111,9 @@ CoordT GeometryTraitsFloat<CoordT>::getCircumcircleTopY(
 
 template <typename CoordT>
 bool GeometryTraitsFloat<CoordT>::isCCW(
-	const Point<CoordT>& a,
-	const Point<CoordT>& b,
-	const Point<CoordT>& c
+	const PointT& a,
+	const PointT& b,
+	const PointT& c
 ) {
 	// Orientation can be seen from the sign of the cross product of two sides.
 	CoordT dx1 = b.x - a.x;

@@ -24,11 +24,11 @@ struct GeometryTraits { };
 ///    goes under the parabola around b. In cases where this does not happen,
 ///    the result should be very big number, positive if positive_big,
 ///    otherwise negative.
+///  - Point<CoordT> getCircumcenter(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c)
+///    returns the center point of the circumscribed circle around triangle 'abc'.
 ///  - CoordT getCircumcircleTopY(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c)
 ///    returns the Y coordinate of the top point (i.e. highest Y coordinate) of
-///    the circumscribed circle around triangle 'abc'. In case of (almost)
-///    collinear points, the result should be very big or very small compared
-///    to site coordinates.
+///    the circumscribed circle around triangle 'abc'.
 ///  - bool isCCW(Point<CoordT> a, Point<CoordT> b, Point<CoordT> c) returns true
 ///    if triangle 'abc' is oriented counterclockwise.
 /// 
@@ -39,6 +39,7 @@ public:
 	BOOST_CONCEPT_USAGE(GeometryTraitsImplementedConcept) {
 		typedef GeometryTraits<CoordT> Traits;
 		sameType(Traits::getBreakpointX(point, point, coord, true), coord);
+		sameType(Traits::getCircumcenter(point, point, point), point);
 		sameType(Traits::getCircumcircleTopY(point, point, point), coord);
 		sameType(Traits::isCCW(point, point, point), bool());
 	}
@@ -59,26 +60,34 @@ private:
 /// (float and double).
 template <typename CoordT>
 struct GeometryTraitsFloat {
+	typedef Point<CoordT> PointT;
+	
 	// Small number that should be insignificant compared to site positions.
 	static constexpr CoordT epsilon = 1e-30;
 	
 	static CoordT getBreakpointX(
-		const Point<CoordT>& a,
-		const Point<CoordT>& b,
+		const PointT& a,
+		const PointT& b,
 		CoordT topy,
 		bool positive_big
 	);
 	
+	static PointT getCircumcenter(
+		const PointT& a,
+		const PointT& b,
+		const PointT& c
+	);
+	
 	static CoordT getCircumcircleTopY(
-		const Point<CoordT>& a,
-		const Point<CoordT>& b,
-		const Point<CoordT>& c
+		const PointT& a,
+		const PointT& b,
+		const PointT& c
 	);
 	
 	static bool isCCW(
-		const Point<CoordT>& a,
-		const Point<CoordT>& b,
-		const Point<CoordT>& c
+		const PointT& a,
+		const PointT& b,
+		const PointT& c
 	);
 };
 
