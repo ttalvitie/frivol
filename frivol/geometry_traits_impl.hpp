@@ -74,7 +74,7 @@ Point<CoordT> GeometryTraitsFloat<CoordT>::getCircumcenter(
 	const PointT& b,
 	const PointT& c
 ) {
-	// TODO: clarify and optimize.
+	// TODO: temporary code directly from Maple, clarify and optimize.
 	CoordT x = 0.5 * (
 			-a.y*b.x*b.x+b.x*b.x*c.y-b.y*c.y*c.y+b.y*a.y*a.y+a.y*c.x*c.x-b.y*b.y*a.y
 			-b.y*c.x*c.x+a.x*a.x*b.y-c.y*a.y*a.y+b.y*b.y*c.y-a.x*a.x*c.y+c.y*c.y*a.y

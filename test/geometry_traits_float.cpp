@@ -8,7 +8,7 @@ using namespace frivol;
 typedef GeometryTraits<float> TraitsT;
 typedef Point<float> PointT;
 
-float eps = 0.001;
+float eps = 0.005;
 
 BOOST_AUTO_TEST_SUITE(geometry_traits_float)
 
@@ -66,41 +66,62 @@ BOOST_AUTO_TEST_CASE(breakpoint_basic) {
 	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, b, y, false), 7.219, eps);
 }
 
+void checkPointsClose(PointT a, PointT b) {
+	BOOST_CHECK_CLOSE(a.x, b.x, eps);
+	BOOST_CHECK_CLOSE(a.y, b.y, eps);
+}
+
 BOOST_AUTO_TEST_CASE(circumcenter_basic) {
 	PointT a(0, 0);
 	PointT b(1, 1);
 	PointT c(0, 2);
 	
-	BOOST_CHECK_CLOSE(TraitsT::getCircumcircleTopY(a, b, c), 2, eps);
+	PointT p(0, 1);
+	
+	checkPointsClose(TraitsT::getCircumcenter(a, b, c), p);
 }
 
-BOOST_AUTO_TEST_CASE(circumcenter2_basic) {
-	PointT a(0, 0);
-	PointT b(1, 0);
-	PointT c(0.5, 1);
+BOOST_AUTO_TEST_CASE(circumcenter_basic2) {
+	PointT p(4, 2);
 	
-	BOOST_CHECK_CLOSE(TraitsT::getCircumcircleTopY(a, b, c), 1, eps);
+	float angle_a = 1;
+	float angle_b = 2.213;
+	float angle_c = 0.5;
+	
+	PointT a(p.x + std::cos(angle_a), p.y + std::sin(angle_a));
+	PointT b(p.x + std::cos(angle_b), p.y + std::sin(angle_b));
+	PointT c(p.x + std::cos(angle_c), p.y + std::sin(angle_c));
+	
+	checkPointsClose(TraitsT::getCircumcenter(a, b, c), p);
 }
 
-BOOST_AUTO_TEST_CASE(circumcenter_collinear) {
-	PointT a(0, 0);
-	PointT b(0, 1);
-	PointT c(0, 2);
+
+BOOST_AUTO_TEST_CASE(circumcenter_basic3) {
+	PointT p(-2, 3.5);
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, b, c)) > 10000.0);
+	float angle_a = 1;
+	float angle_b = 1.4;
+	float angle_c = 3.24;
+	
+	PointT a(p.x + std::cos(angle_a), p.y + std::sin(angle_a));
+	PointT b(p.x + std::cos(angle_b), p.y + std::sin(angle_b));
+	PointT c(p.x + std::cos(angle_c), p.y + std::sin(angle_c));
+	
+	checkPointsClose(TraitsT::getCircumcenter(a, b, c), p);
 }
 
-BOOST_AUTO_TEST_CASE(circumcenter_two_incident) {
-	PointT a(0, 0);
-	PointT b(1, 1);
+BOOST_AUTO_TEST_CASE(circumcircle_topy_works) {
+	PointT p(-2, 3.5);
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, b, b)) > 10000.0);
-}
-
-BOOST_AUTO_TEST_CASE(circumcenter_all_incident) {
-	PointT a(5, 6);
+	float angle_a = 1;
+	float angle_b = 1.4;
+	float angle_c = 3.24;
 	
-	BOOST_CHECK(std::abs(TraitsT::getCircumcircleTopY(a, a, a)) > 10000.0);
+	PointT a(p.x + std::cos(angle_a), p.y + std::sin(angle_a));
+	PointT b(p.x + std::cos(angle_b), p.y + std::sin(angle_b));
+	PointT c(p.x + std::cos(angle_c), p.y + std::sin(angle_c));
+	
+	BOOST_CHECK_CLOSE(TraitsT::getCircumcircleTopY(a, b, c), p.y + 1, eps);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
