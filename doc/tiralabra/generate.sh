@@ -9,4 +9,5 @@ for i in 1 2
 do
 	pdflatex maarittelydokumentti.tex
 	pdflatex viikkoraportti1.tex
+	pdflatex viikkoraportti2.tex
 done
