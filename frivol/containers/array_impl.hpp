@@ -11,7 +11,7 @@ template <typename T>
 const T& Array<T>::operator[](Idx index) const {
 #ifdef FRIVOL_ARRAY_BOUNDS_CHECKING
 	if(index >= getSize()) {
-		throw std::out_of_bounds("Array<T>::operator[] const: Array index out of bounds.");
+		throw std::out_of_range("Array<T>::operator[] const: Array index out of bounds.");
 	}
 #endif
 	
@@ -22,7 +22,7 @@ template <typename T>
 T& Array<T>::operator[](Idx index) {
 #ifdef FRIVOL_ARRAY_BOUNDS_CHECKING
 	if(index >= getSize()) {
-		throw std::out_of_bounds("Array<T>::operator[]: Array index out of bounds.");
+		throw std::out_of_range("Array<T>::operator[]: Array index out of bounds.");
 	}
 #endif
 	
