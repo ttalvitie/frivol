@@ -1,10 +1,10 @@
 #ifndef FRIVOL_FORTUNE_HPP
 #define FRIVOL_FORTUNE_HPP
 
-#include <frivol/beach_line.hpp>
+#include <frivol/containers/priority_queue_concept.hpp>
+#include <frivol/fortune/beach_line.hpp>
 #include <frivol/policy.hpp>
 #include <frivol/geometry_traits.hpp>
-#include <frivol/containers/priority_queue_concept.hpp>
 
 namespace frivol {
 namespace fortune {

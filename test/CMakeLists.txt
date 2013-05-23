@@ -18,8 +18,8 @@ file(
 	containers/priority_queue.cpp
 	containers/search_tree.cpp
 	containers/stack.cpp
+	fortune/fortune_algorithm.cpp
 	geometry_traits_float.cpp 
-	fortune_algorithm.cpp
 )
 add_executable(test ${TEST_SOURCES})
 
