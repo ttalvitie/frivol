@@ -46,7 +46,7 @@ std::pair<Idx, Idx> BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepl
 			throw;
 		}
 		
-		return std::make_pair(new_arc_id, base_iter->site);
+		return std::make_pair(new_arc_id, base_iter->arc_id);
 	}
 }
 
