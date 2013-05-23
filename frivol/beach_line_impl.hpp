@@ -118,8 +118,9 @@ int BeachLine<PolicyT>::orderArcX_(
 	if(left_arc_id != nil_idx) {
 		Idx left_site = getOriginSite(left_arc_id);
 		
-		CoordT breakpoint_x =
-			GeometryTraitsT::getBreakpointX(sites_[left_site], sites_[site], sweepline_y);
+		CoordT breakpoint_x = GeometryTraitsT::getBreakpointX(
+			sites_[left_site], sites_[site], sweepline_y, false
+		);
 		
 		if(x < breakpoint_x) return -1;
 	}
@@ -127,8 +128,9 @@ int BeachLine<PolicyT>::orderArcX_(
 	if(right_arc_id != nil_idx) {
 		Idx right_site = getOriginSite(right_arc_id);
 		
-		CoordT breakpoint_x =
-			GeometryTraitsT::getBreakpointX(sites_[site], sites_[right_site], sweepline_y);
+		CoordT breakpoint_x = GeometryTraitsT::getBreakpointX(
+			sites_[site], sites_[right_site], sweepline_y, true
+		);
 		
 		if(x > breakpoint_x) return 1;
 	}

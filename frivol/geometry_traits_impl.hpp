@@ -7,55 +7,65 @@ template <typename CoordT>
 CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 	const Point<CoordT>& a,
 	const Point<CoordT>& b,
-	CoordT topy
+	CoordT topy,
+	bool positive_big
 ) {
-	if(a.y == topy) {
+	if(a.y > topy - epsilon) {
 		return a.x;
 	}
-	if(b.y == topy) {
+	if(b.y > topy - epsilon) {
 		return b.x;
 	}
 	
-	// Naive equation solution.
-	CoordT x1;
-	{
-		// The equation is A x^2 + B x + C = 0, where
-		// TODO: clarify and optimize.
-		CoordT A = a.y-b.y;
-		CoordT B = -2*a.y*b.x+2*topy*b.x+2*a.x*b.y-2*topy*a.x;
-		CoordT C = 
-			-topy*b.x*b.x-topy*b.y*b.y+topy*topy*b.y-a.x*a.x*b.y+a.x*a.x*topy
-			-a.y*topy*topy-a.y*a.y*b.y+a.y*b.x*b.x+a.y*b.y*b.y+a.y*a.y*topy;
-		
-		// Choose the right solution: if a.y < b.y, the smaller solution and
-		// otherwise the greater solution.
-		CoordT sign = (a.y < b.y == A > 0.0) ? -1.0 : 1.0;
-		
-		x1 = (-B + sign * std::sqrt(B * B - 4 * A * C)) / (2 * A);
+	// Reduce to the case where a = (0, 0), b = (u, v), topy = h.
+	CoordT u = b.x - a.x;
+	CoordT v = b.y - a.y;
+	CoordT h = topy - a.y;
+	
+	// If the points are on the same level, the result is either in the middle
+	// or in infinity, because the parabolas meet only once.
+	if(std::abs(v) < epsilon) {
+		if(u > -epsilon) {
+			return 0.5 * (a.x + b.x);
+		} else {
+			if(positive_big) {
+				return std::numeric_limits<CoordT>::infinity();
+			} else {
+				return -std::numeric_limits<CoordT>::infinity();
+			}
+		}
 	}
 	
-	// Choosing the average of the x coordinates of the sites, exact in the
-	// case where a.y == b.y.
-	CoordT x2 = 0.5 * (a.x + b.x);
+	// Otherwise, we need to solve x from:
+	//   x^2 + y^2 = (y - h)^2 = (x-u)^2 + (y-v)^2.
+	// Subtracting first equality from the second yields
+	//   2ux + 2vy = u^2 + v^2.
+	// Solving y and substituting to the first equality yields
+	//   A x^2 + B x + C = 0, where
+	//   A = v
+	//   B = -2hu
+	//   C = h(u^2+v^2-vh).
+	CoordT A = v;
+	CoordT B = -2 * h * u;
+	CoordT C = h * (u * u + v * v - v * h);
 	
-	// If x1 is not finite, x2 has to be better.
-	if(!std::isfinite(x1)) return x2;
+	CoordT discriminant = B * B - 4 * A * C;
+	if(discriminant < 0.0) discriminant = 0.0;
 	
-	// Choose the better matching solution.
-	
-	// Function for calculating the y coordinate difference of the parabolas in
-	// given X coordinate.
-	auto diff = [=](CoordT x) {
-		CoordT a_y = 0.5*(-x*x+2*x*a.x-a.x*a.x-a.y*a.y+topy*topy)/(-a.y+topy);
-		CoordT b_y = 0.5*(-x*x+2*x*b.x-b.x*b.x-b.y*b.y+topy*topy)/(-b.y+topy);
-		return a_y - b_y;
-	};
-	
-	if(std::abs(diff(x1)) < std::abs(diff(x2))) {
-		return x1;
+	// If a is below b, we'll choose the leftmost solution and vice versa.
+	// Therefore we'll subtract the square root in the quadratic formula.
+	// In case the quadratic formula is numerically unstable, we use the
+	// fact that C/A is the product of the two solutions.
+	CoordT x;
+	if(B > 0.0) {
+		x = (-B - std::sqrt(discriminant)) / (2 * A);
 	} else {
-		return x2;
+		CoordT other_solution = (-B + std::sqrt(discriminant)) / (2 * A);
+		x = C / (A * other_solution);
 	}
+	
+	// Move the solution back to the original case.
+	return a.x + x;
 }
 
 template <typename CoordT>
