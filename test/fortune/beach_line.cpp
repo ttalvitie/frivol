@@ -20,9 +20,7 @@ BOOST_AUTO_TEST_CASE(empty_insert_works) {
 	containers::Array<Point<>> sites(1);
 	BeachLineT beach_line(sites, 1);
 	Idx arc_id, base_arc_id;
-	std::tie(arc_id, base_arc_id) = beach_line.insertArc(0, 0);
-	BOOST_CHECK_EQUAL(arc_id, 0); // Only possible arc id.
-	BOOST_CHECK_EQUAL(base_arc_id, nil_idx);
+	BOOST_CHECK_EQUAL(beach_line.insertArc(0, 0), 0); // Only possible arc id.
 }
 
 BOOST_AUTO_TEST_CASE(arc_tower_works) {
@@ -36,7 +34,7 @@ BOOST_AUTO_TEST_CASE(arc_tower_works) {
 	bool thrown = false;
 	beach_line.insertArc(0, 0);
 	beach_line.insertArc(1, 1);
-	Idx middle = beach_line.insertArc(2, 2).first;
+	Idx middle = beach_line.insertArc(2, 2);
 	
 	// Check that all arcs have the right origins and there are no extra
 	// arcs.

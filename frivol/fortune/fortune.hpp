@@ -4,6 +4,7 @@
 #include <frivol/containers/priority_queue_concept.hpp>
 #include <frivol/fortune/beach_line.hpp>
 #include <frivol/policy.hpp>
+#include <frivol/voronoi_diagram.hpp>
 #include <frivol/geometry_traits.hpp>
 
 namespace frivol {
@@ -16,6 +17,7 @@ class Algorithm {
 public:
 	typedef typename PolicyT::Coord CoordT;
 	typedef Point<CoordT> PointT;
+	typedef VoronoiDiagram<CoordT> VoronoiDiagramT;
 	
 	/// Constructs algorithm state.
 	/// @param points Reference to the input set of sites. The object must
@@ -95,6 +97,9 @@ private:
 	/// can be translated with #getCircleEventKey_, #getSiteEventKey_ and
 	/// #getEventInfo_.
 	EventPriorityQueueT event_queue_;
+	
+	/// The output Voronoi diagram that is constructed by the algorithm.
+	VoronoiDiagramT diagram_;
 	
 	/// Number of voronoi vertices met.
 	int voronoi_vertex_count_;

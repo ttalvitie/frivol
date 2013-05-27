@@ -14,6 +14,12 @@ Algorithm<PolicyT>::Algorithm(const containers::Array<PointT>& sites)
 	for(Idx i = 0; i < sites_.getSize(); ++i) {
 		event_queue_.setPriority(getSiteEventKey_(i), sites_[i].y);
 	}
+	
+	// Initialize one face for each input site, initially having no incident
+	// edge.
+	for(Idx i = 0; i < sites_.getSize(); ++i) {
+		diagram_.faces.add(typename VoronoiDiagramT::Face{nil_idx});
+	}
 }
 
 template <typename PolicyT>
@@ -109,23 +115,19 @@ void Algorithm<PolicyT>::tryAddCircleEvent_(Idx arc_id) {
 
 template <typename PolicyT>
 void Algorithm<PolicyT>::handleSiteEvent_(Idx site) {
-	Idx arc_id, base_arc_id;
-	std::tie(arc_id, base_arc_id) = beach_line_.insertArc(site, sweepline_y_);
+	Idx arc_id = beach_line_.insertArc(site, sweepline_y_);
 	
-	// The possible circle event around the base arc is false alarm because
-	// the situation in it has changed.
-	if(base_arc_id != nil_idx) {
-		event_queue_.setPriorityNIL(getCircleEventKey_(base_arc_id));
-	}
-	
-	// Add the possible new circle events.
 	Idx left_arc_id = beach_line_.getLeftArc(arc_id);
 	Idx right_arc_id = beach_line_.getRightArc(arc_id);
 	
-	if(left_arc_id != nil_idx) {
-		tryAddCircleEvent_(left_arc_id);
-	}
+	// If there are arcs around the new arc, the beach line was not empty.
 	if(right_arc_id != nil_idx) {
+		// The possible circle event around the arc over which the new arc
+		// was placed was false alarm because the situation around it has changed.
+		event_queue_.setPriorityNIL(getCircleEventKey_(right_arc_id));
+		
+		// Add the possible new circle events.
+		tryAddCircleEvent_(left_arc_id);
 		tryAddCircleEvent_(right_arc_id);
 	}
 }

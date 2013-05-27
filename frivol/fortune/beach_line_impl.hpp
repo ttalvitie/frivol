@@ -19,7 +19,7 @@ Idx BeachLine<PolicyT>::getMaxArcCount() const {
 }
 
 template <typename PolicyT>
-std::pair<Idx, Idx> BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepline_y) {
+Idx BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepline_y) {
 	// Search for an arc on which to place the new arc.
 	const CoordT& x = sites_[site].x;
 	
@@ -32,7 +32,7 @@ std::pair<Idx, Idx> BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepl
 	// If there was no match, this is the only arc. Otherwise, split the
 	// base arc to two parts and place the new arc in between.
 	if(base_iter == beach_line_.end()) {
-		return std::make_pair(insertArcTo_(beach_line_.end(), site), nil_idx);
+		return insertArcTo_(beach_line_.end(), site);
 	} else {
 		Idx left_arc_id = insertArcTo_(base_iter, base_iter->site);
 		Idx new_arc_id;
@@ -46,7 +46,7 @@ std::pair<Idx, Idx> BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepl
 			throw;
 		}
 		
-		return std::make_pair(new_arc_id, base_iter->arc_id);
+		return new_arc_id;
 	}
 }
 

@@ -41,17 +41,17 @@ public:
 	/// IDs are in 0, ..., getMaxArcCount()-1.
 	Idx getMaxArcCount() const;
 	
-	/// Adds arc to the right place in the beach line. The arc ending up under
-	/// the new arc is split in two.
+	/// Adds arc to the right place in the beach line. If the beach line is
+	/// nonempty, the arc under the new arc is split split in two, so that the
+	/// original arc is on the right from the new arc and an additional arc is
+	/// created to the left from the new arc.
 	/// @param site The origin site of the arc.
 	/// @param sweepline_y The Y-coordinate of the sweep line that defines the
 	/// parabolas.
-	/// @returns pair consisting of the ID of the new arc and the ID of the arc
-	/// on which it was placed and that was split in two (the returned part being
-	/// on the right of the new arc), or nil_idx if the beach line was empty.
+	/// @returns the ID of the new arc.
 	/// @throws std::logic_error if the maximum number of arcs (getMaxArcCount())
 	/// are already in use.
-	std::pair<Idx, Idx> insertArc(Idx site, const CoordT& sweepline_y);
+	Idx insertArc(Idx site, const CoordT& sweepline_y);
 	
 	/// Removes arc from the beach line.
 	/// @param arc_id The ID of the arc to remove.
