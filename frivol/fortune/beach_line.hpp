@@ -1,5 +1,5 @@
-#ifndef FRIVOL_BEACH_LINE_HPP
-#define FRIVOL_BEACH_LINE_HPP
+#ifndef FRIVOL_FORTUNE_BEACH_LINE_HPP
+#define FRIVOL_FORTUNE_BEACH_LINE_HPP
 
 #include <frivol/containers/search_tree_concept.hpp>
 #include <frivol/containers/stack.hpp>

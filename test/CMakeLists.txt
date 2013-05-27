@@ -18,6 +18,7 @@ file(
 	containers/priority_queue.cpp
 	containers/search_tree.cpp
 	containers/stack.cpp
+	containers/dynamic_array.cpp
 	fortune/fortune_algorithm.cpp
 	fortune/beach_line.cpp
 	geometry_traits_float.cpp 

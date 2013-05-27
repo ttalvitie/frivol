@@ -1,5 +1,5 @@
-#ifndef FRIVOL_FORTUNE_HPP
-#define FRIVOL_FORTUNE_HPP
+#ifndef FRIVOL_FORTUNE_FORTUNE_HPP
+#define FRIVOL_FORTUNE_FORTUNE_HPP
 
 #include <frivol/containers/priority_queue_concept.hpp>
 #include <frivol/fortune/beach_line.hpp>
