@@ -85,4 +85,51 @@ BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_vertices) {
 	BOOST_CHECK_EQUAL(n, algo.getVoronoiVertexCount());
 }
 
+BOOST_AUTO_TEST_CASE(empty_voronoi_diagram) {
+	containers::Array<Point<>> sites;
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 0);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 0);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(one_site_voronoi_diagram) {
+	containers::Array<Point<>> sites(1);
+	sites[0] = Point<>(0, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 1);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 0);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 0);
+	BOOST_CHECK_EQUAL(diagram.getFaceBoundaryEdge(0), nil_idx);
+}
+
+BOOST_AUTO_TEST_CASE(two_site_voronoi_diagram) {
+	containers::Array<Point<>> sites(2);
+	sites[0] = Point<>(0, 0);
+	sites[0] = Point<>(1, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 2);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 2);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 0);
+	
+	// The edges should be correctly marked incident to the faces.
+	BOOST_CHECK(diagram.getFaceBoundaryEdge(0) >= 0);
+	BOOST_CHECK(diagram.getFaceBoundaryEdge(0) <= 1);
+	BOOST_CHECK(diagram.getFaceBoundaryEdge(1) >= 0);
+	BOOST_CHECK(diagram.getFaceBoundaryEdge(1) <= 1);
+	BOOST_CHECK(diagram.getFaceBoundaryEdge(0) != diagram.getFaceBoundaryEdge(1));
+	
+	// Edges should have themselves as previous and next.
+	for(int edge = 0; edge < 2; ++edge) {
+		BOOST_CHECK_EQUAL(diagram.getNextEdge(edge), edge);
+		BOOST_CHECK_EQUAL(diagram.getPreviousEdge(edge), edge);
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()

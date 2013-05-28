@@ -4,9 +4,7 @@ namespace fortune {
 template <typename PolicyT>
 Algorithm<PolicyT>::Algorithm(const containers::Array<PointT>& sites)
 	: sites_(sites),
-	  // 2 * sites.getSize() - 1 arcs will suffice because it is the theoretical limit
-	  // of arcs on the beach line concurrently.
-	  beach_line_(sites_, 2 * sites.getSize() - 1),
+	  beach_line_(sites_, std::max(2 * sites.getSize(), (Idx)1) - 1),
 	  event_queue_(getEventKeyCount_()),
 	  diagram_(sites_.getSize()),
 	  breakpoint_edge_index_(beach_line_.getMaxArcCount())
@@ -32,6 +30,10 @@ void Algorithm<PolicyT>::step() {
 	} else {
 		handleCircleEvent_(event_info.second);
 	}
+	
+	// If we are done now, mark all infinite edges consecutive in the Voronoi
+	// diagram.
+	if(event_queue_.empty()) markConsecutiveInfiniteEdges_();
 }
 
 template <typename PolicyT>
@@ -52,6 +54,12 @@ void Algorithm<PolicyT>::finish() {
 template <typename PolicyT>
 int Algorithm<PolicyT>::getVoronoiVertexCount() const {
 	return diagram_.getVertexCount();
+}
+
+template <typename PolicyT>
+const VoronoiDiagram<typename PolicyT::Coord>& 
+	Algorithm<PolicyT>::getVoronoiDiagram() const {
+	return diagram_;
 }
 
 template <typename PolicyT>
@@ -165,6 +173,28 @@ void Algorithm<PolicyT>::handleCircleEvent_(Idx arc_id) {
 	// Add the possible new circle events;
 	tryAddCircleEvent_(left_arc_id);
 	tryAddCircleEvent_(right_arc_id);
+}
+
+template <typename PolicyT>
+void Algorithm<PolicyT>::markConsecutiveInfiniteEdges_() {
+	// If there are only zero or one arcs, there's nothing to do.
+	if(beach_line_.getLeftmostArc() == nil_idx) return;
+	if(beach_line_.getLeftmostArc() == beach_line_.getRightmostArc()) return;
+	
+	// Cycle through consecutive pairs of breakpoints.
+	Idx arc1 = beach_line_.getLeftArc(beach_line_.getRightmostArc());
+	for(
+		Idx arc2 = beach_line_.getLeftmostArc();
+		arc2 != beach_line_.getRightmostArc();
+		arc2 = beach_line_.getRightArc(arc2)
+	) {
+		diagram_.consecutiveEdges(
+			breakpoint_edge_index_[arc2],
+			diagram_.getTwinEdge(breakpoint_edge_index_[arc1])
+		);
+		
+		arc1 = arc2;
+	}
 }
 
 }

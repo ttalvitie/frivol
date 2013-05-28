@@ -22,6 +22,46 @@ BOOST_AUTO_TEST_CASE(empty_insert_works) {
 	BOOST_CHECK_EQUAL(beach_line.insertArc(0, 0), 0); // Only possible arc id.
 }
 
+BOOST_AUTO_TEST_CASE(leftmost_rightmost_works_empty) {
+	containers::Array<Point<>> sites(1);
+	BeachLineT beach_line(sites, 0);
+	BOOST_CHECK_EQUAL(beach_line.getLeftmostArc(), nil_idx);
+	BOOST_CHECK_EQUAL(beach_line.getRightmostArc(), nil_idx);
+}
+
+BOOST_AUTO_TEST_CASE(left_right_works_single) {
+	containers::Array<Point<>> sites(1);
+	sites[0] = Point<>(0, 0);
+	BeachLineT beach_line(sites, 1);
+	beach_line.insertArc(0, 0);
+	BOOST_CHECK_EQUAL(beach_line.getLeftmostArc(), 0);
+	BOOST_CHECK_EQUAL(beach_line.getRightmostArc(), 0);
+	BOOST_CHECK_EQUAL(beach_line.getLeftArc(0), nil_idx);
+	BOOST_CHECK_EQUAL(beach_line.getRightArc(0), nil_idx);
+}
+
+
+BOOST_AUTO_TEST_CASE(left_right_works_three_arcs) {
+	containers::Array<Point<>> sites(2);
+	sites[0] = Point<>(0, 0);
+	sites[1] = Point<>(0, 1);
+	BeachLineT beach_line(sites, 3);
+	Idx low_right = beach_line.insertArc(0, 0);
+	Idx high = beach_line.insertArc(1, 1);
+	Idx low_left = beach_line.getLeftArc(high);
+	BOOST_CHECK_EQUAL(beach_line.getLeftmostArc(), low_left);
+	BOOST_CHECK_EQUAL(beach_line.getRightmostArc(), low_right);
+	
+	BOOST_CHECK_EQUAL(beach_line.getLeftArc(low_left), nil_idx);
+	BOOST_CHECK_EQUAL(beach_line.getRightArc(low_left), high);
+	
+	BOOST_CHECK_EQUAL(beach_line.getLeftArc(high), low_left);
+	BOOST_CHECK_EQUAL(beach_line.getRightArc(high), low_right);
+	
+	BOOST_CHECK_EQUAL(beach_line.getLeftArc(low_right), high);
+	BOOST_CHECK_EQUAL(beach_line.getRightArc(low_right), nil_idx);
+}
+
 BOOST_AUTO_TEST_CASE(arc_tower_works) {
 	// "tower" of three arcs
 	containers::Array<Point<>> sites(3);

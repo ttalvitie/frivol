@@ -52,12 +52,12 @@ Idx VoronoiDiagram<CoordT>::getEndVertex(Idx edge) const {
 }
 
 template <typename CoordT>
-Idx VoronoiDiagram<CoordT>::getNextEdge(Idx edge) {
+Idx VoronoiDiagram<CoordT>::getNextEdge(Idx edge) const {
 	return edges_[edge].next_edge;
 }
 
 template <typename CoordT>
-Idx VoronoiDiagram<CoordT>::getPreviousEdge(Idx edge) {
+Idx VoronoiDiagram<CoordT>::getPreviousEdge(Idx edge) const {
 	return edges_[edge].prev_edge;
 }
 

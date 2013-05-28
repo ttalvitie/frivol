@@ -62,17 +62,23 @@ public:
 	/// @param arc_id ID of the arc.
 	/// @returns arc ID of the arc to the left from arc_id, or nil_idx if arc_id
 	/// is the leftmost arc.
-	Idx getLeftArc(Idx arc_id) const;
+	Idx getLeftArc(Idx arc_id);
 	
 	/// Returns the ID of the arc right from given arc.
 	/// @param arc_id ID of the arc.
 	/// @returns arc ID of the arc to the right from arc_id, or nil_idx if arc_id
 	/// is the rightmost arc.
-	Idx getRightArc(Idx arc_id) const;
+	Idx getRightArc(Idx arc_id);
+	
+	/// Returns the ID of the leftmost arc, or nil_idx if the beach line is empty.
+	Idx getLeftmostArc();
+	
+	/// Returns the ID of the rightmost arc, or nil_idx if the beach line is empty.
+	Idx getRightmostArc();
 	
 	/// Returns the index of the origin site of given arc.
 	/// @param arc_id ID of the arc.
-	Idx getOriginSite(Idx arc_id) const;
+	Idx getOriginSite(Idx arc_id);
 	
 private:
 	typedef typename PolicyT::template BeachLineSearchTree<Arc> SearchTreeT;
@@ -95,7 +101,7 @@ private:
 	/// @param arc_id The ID of the arc.
 	/// @param sweepline_y The Y-coordinate of the sweep line that defines the
 	/// parabolas.
-	int orderArcX_(const CoordT& x, Idx arc_id, const CoordT& sweepline_y) const;
+	int orderArcX_(const CoordT& x, Idx arc_id, const CoordT& sweepline_y);
 	
 	
 	/// Array of input point sites.

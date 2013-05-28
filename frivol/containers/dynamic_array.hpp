@@ -8,7 +8,7 @@ namespace frivol {
 namespace containers {
 
 /// Array that is more efficient at adding elements to the end than a regular
-/// array because DynamicArray allocates more elements in advance.
+/// array because DynamicArray constructs more elements in advance.
 /// @tparam T The type of stored elements. Should be default constructible.
 template <typename T>
 class DynamicArray {

@@ -40,6 +40,10 @@ public:
 	/// Returns the number of Voronoi vertices met in the algorithm.
 	int getVoronoiVertexCount() const;
 	
+	/// Returns the Voronoi diagram constructed in the algorithm. The diagram
+	/// is complete if the algorithm is finished.
+	const VoronoiDiagramT& getVoronoiDiagram() const;
+	
 private:
 	typedef BeachLine<PolicyT> BeachLineT;
 	
@@ -81,6 +85,10 @@ private:
 	/// Handles circle event.
 	/// @param arc_id The ID of the disappearing arc.
 	void handleCircleEvent_(Idx arc_id);
+	
+	/// Mark the consecutive edges to infinite edges in the Voronoi diagram.
+	/// Should only be run when all events have been handled.
+	void markConsecutiveInfiniteEdges_();
 	
 	
 	/// The input set of point sites.

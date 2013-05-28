@@ -7,8 +7,9 @@
 namespace frivol {
 namespace containers {
 
-/// Stack of elements.
-/// @tparam T The type of stored elements. Should be default constructible.
+/// Stack of elements. The container constructs elements in advance so they
+/// should be default-constructible.
+/// @tparam T The type of stored elements.
 template <typename T>
 class Stack {
 public:

@@ -39,8 +39,8 @@ public:
 	Idx getVertexCount() const;
 	
 	/// Returns the ID of a half-edge that is on the boundary of given face.
-	/// If the diagram is incomplete and no such edges have been found, nil_idx
-	/// is returned.
+	/// If the diagram is incomplete and no such edges have been found or there
+	/// is only one face, nil_idx is returned.
 	/// @param face ID of the face that the half-edge should be incident to.
 	Idx getFaceBoundaryEdge(Idx face) const;
 	
@@ -69,13 +69,13 @@ public:
 	/// If the diagram is incomplete and the next edge has not yet been found,
 	/// nil_idx is returned.
 	/// @param edge ID of the half-edge.
-	Idx getNextEdge(Idx edge);
+	Idx getNextEdge(Idx edge) const;
 	
 	/// Returns the ID of the previous half-edge around the incident face.
 	/// If the diagram is incomplete and the previous edge has not yet been found,
 	/// nil_idx is returned.
 	/// @param edge ID of the half-edge.
-	Idx getPreviousEdge(Idx edge);
+	Idx getPreviousEdge(Idx edge) const;
 	
 	/// Returns the position of a Voronoi vertex.
 	/// @param vertex ID of the Voronoi vertex.

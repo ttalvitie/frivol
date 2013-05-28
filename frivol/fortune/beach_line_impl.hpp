@@ -58,7 +58,7 @@ void BeachLine<PolicyT>::removeArc(Idx arc_id) {
 }
 
 template <typename PolicyT>
-Idx BeachLine<PolicyT>::getLeftArc(Idx arc_id) const {
+Idx BeachLine<PolicyT>::getLeftArc(Idx arc_id) {
 	SearchTreeIteratorT iter = arc_iterators_by_id_[arc_id];
 	
 	if(iter == beach_line_.begin()) {
@@ -70,7 +70,7 @@ Idx BeachLine<PolicyT>::getLeftArc(Idx arc_id) const {
 }
 
 template <typename PolicyT>
-Idx BeachLine<PolicyT>::getRightArc(Idx arc_id) const {
+Idx BeachLine<PolicyT>::getRightArc(Idx arc_id) {
 	SearchTreeIteratorT iter = arc_iterators_by_id_[arc_id];
 	++iter;
 	
@@ -82,7 +82,21 @@ Idx BeachLine<PolicyT>::getRightArc(Idx arc_id) const {
 }
 
 template <typename PolicyT>
-Idx BeachLine<PolicyT>::getOriginSite(Idx arc_id) const {
+Idx BeachLine<PolicyT>::getLeftmostArc() {
+	if(beach_line_.empty()) return nil_idx;
+	return beach_line_.begin()->arc_id;
+}
+
+template <typename PolicyT>
+Idx BeachLine<PolicyT>::getRightmostArc() {
+	if(beach_line_.empty()) return nil_idx;
+	SearchTreeIteratorT iter = beach_line_.end();
+	--iter;
+	return iter->arc_id;
+}
+
+template <typename PolicyT>
+Idx BeachLine<PolicyT>::getOriginSite(Idx arc_id) {
 	SearchTreeIteratorT iter = arc_iterators_by_id_[arc_id];
 	return iter->site;
 }
@@ -109,7 +123,7 @@ int BeachLine<PolicyT>::orderArcX_(
 	const CoordT& x,
 	Idx arc_id,
 	const CoordT& sweepline_y
-) const {
+) {
 	Idx left_arc_id = getLeftArc(arc_id);
 	Idx right_arc_id = getRightArc(arc_id);
 	
