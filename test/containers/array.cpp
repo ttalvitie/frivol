@@ -56,4 +56,16 @@ BOOST_AUTO_TEST_CASE(growing_resize_works) {
 	}
 }
 
+BOOST_AUTO_TEST_CASE(empty_array_works) {
+	Array<double> array(0);
+	BOOST_CHECK_EQUAL(array.getSize(), 0);
+}
+
+BOOST_AUTO_TEST_CASE(default_constructor_works) {
+	Array<double> array;
+	BOOST_CHECK_EQUAL(array.getSize(), 0);
+	array.resize(5);
+	BOOST_CHECK_EQUAL(array.getSize(), 5);
+}
+
 BOOST_AUTO_TEST_SUITE_END()

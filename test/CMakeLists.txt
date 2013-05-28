@@ -9,6 +9,7 @@ include_directories(${frivol_test_SOURCE_DIR}/..)
 add_definitions(
 	-std=c++11
 	-DBOOST_TEST_DYN_LINK
+	-Wall
 )
 
 file(

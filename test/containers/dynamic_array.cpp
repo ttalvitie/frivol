@@ -33,6 +33,12 @@ BOOST_AUTO_TEST_CASE(add_increases_size) {
 	BOOST_CHECK_EQUAL(array.getSize(), 5);
 }
 
+BOOST_AUTO_TEST_CASE(add_returns_index) {
+	DynamicArray<double> array(3);
+	BOOST_CHECK_EQUAL(array.add(31), 3);
+	BOOST_CHECK_EQUAL(array.add(311), 4);
+}
+
 BOOST_AUTO_TEST_CASE(large_add_works) {
 	DynamicArray<int> array;
 	for(int i = 0; i < 421; ++i) {

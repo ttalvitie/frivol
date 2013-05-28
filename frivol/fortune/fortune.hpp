@@ -101,8 +101,9 @@ private:
 	/// The output Voronoi diagram that is constructed by the algorithm.
 	VoronoiDiagramT diagram_;
 	
-	/// Number of voronoi vertices met.
-	int voronoi_vertex_count_;
+	/// Indexes of the half-edges the breakpoints are drawing, indexed by the
+	/// arc IDs of the arcs left from the breakpoints.
+	containers::Array<Idx> breakpoint_edge_index_;
 };
 
 }

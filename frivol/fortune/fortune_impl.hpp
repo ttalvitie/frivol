@@ -8,17 +8,12 @@ Algorithm<PolicyT>::Algorithm(const containers::Array<PointT>& sites)
 	  // of arcs on the beach line concurrently.
 	  beach_line_(sites_, 2 * sites.getSize() - 1),
 	  event_queue_(getEventKeyCount_()),
-	  voronoi_vertex_count_(0)
+	  diagram_(sites_.getSize()),
+	  breakpoint_edge_index_(beach_line_.getMaxArcCount())
 {
 	// All sites must have events in the queue.
 	for(Idx i = 0; i < sites_.getSize(); ++i) {
 		event_queue_.setPriority(getSiteEventKey_(i), sites_[i].y);
-	}
-	
-	// Initialize one face for each input site, initially having no incident
-	// edge.
-	for(Idx i = 0; i < sites_.getSize(); ++i) {
-		diagram_.faces.add(typename VoronoiDiagramT::Face{nil_idx});
 	}
 }
 
@@ -56,7 +51,7 @@ void Algorithm<PolicyT>::finish() {
 
 template <typename PolicyT>
 int Algorithm<PolicyT>::getVoronoiVertexCount() const {
-	return voronoi_vertex_count_;
+	return diagram_.getVertexCount();
 }
 
 template <typename PolicyT>
@@ -129,18 +124,39 @@ void Algorithm<PolicyT>::handleSiteEvent_(Idx site) {
 		// Add the possible new circle events.
 		tryAddCircleEvent_(left_arc_id);
 		tryAddCircleEvent_(right_arc_id);
+		
+		// Add the edge between the sites of the new arc and the arc below it.
+		Idx base_site = beach_line_.getOriginSite(right_arc_id);
+		
+		Idx left_edge, right_edge;
+		std::tie(left_edge, right_edge) = diagram_.addEdge(site, base_site);
+		
+		// Mark the edges to the breakpoints drawing them.
+		breakpoint_edge_index_[left_arc_id] = left_edge;
+		breakpoint_edge_index_[arc_id] = right_edge;
 	}
 }
 
 template <typename PolicyT>
 void Algorithm<PolicyT>::handleCircleEvent_(Idx arc_id) {
-	// Each circle event means a new voronoi vertex.
-	++voronoi_vertex_count_;
+	Idx left_arc_id = beach_line_.getLeftArc(arc_id);
+	Idx right_arc_id = beach_line_.getRightArc(arc_id);
+	
+	Idx left_site = beach_line_.getOriginSite(left_arc_id);
+	Idx right_site = beach_line_.getOriginSite(right_arc_id);
+	
+	// Add the new Voronoi vertex.
+	Idx left_edge = breakpoint_edge_index_[left_arc_id];
+	Idx right_edge = breakpoint_edge_index_[right_arc_id];
+	Idx new_edge_in, new_edge_out;
+	std::tie(new_edge_in, new_edge_out) = diagram_.addEdge(right_site, left_site);
+	diagram_.addVertex(PointT(), new_edge_in, left_edge, right_edge);
+	
+	// Update the remaining breakpoint to draw the right edge.
+	breakpoint_edge_index_[left_arc_id] = new_edge_out;
 	
 	// The possible circle event around the left and right arcs are false alarms
 	// because the situations in them have changed.
-	Idx left_arc_id = beach_line_.getLeftArc(arc_id);
-	Idx right_arc_id = beach_line_.getRightArc(arc_id);
 	event_queue_.setPriorityNIL(getCircleEventKey_(left_arc_id));
 	event_queue_.setPriorityNIL(getCircleEventKey_(right_arc_id));
 	

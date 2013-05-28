@@ -2,6 +2,9 @@ namespace frivol {
 namespace containers {
 
 template <typename T>
+Array<T>::Array() : Array(0) { }
+
+template <typename T>
 Array<T>::Array(Idx size)
 	: elements_(new T[size]),
 	  size_(size)

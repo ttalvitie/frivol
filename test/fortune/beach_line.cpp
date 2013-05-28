@@ -19,7 +19,6 @@ BOOST_AUTO_TEST_CASE(max_arc_count_works) {
 BOOST_AUTO_TEST_CASE(empty_insert_works) {
 	containers::Array<Point<>> sites(1);
 	BeachLineT beach_line(sites, 1);
-	Idx arc_id, base_arc_id;
 	BOOST_CHECK_EQUAL(beach_line.insertArc(0, 0), 0); // Only possible arc id.
 }
 
@@ -31,7 +30,6 @@ BOOST_AUTO_TEST_CASE(arc_tower_works) {
 	sites[2] = Point<>(0, 2);
 	BeachLineT beach_line(sites, 5);
 	
-	bool thrown = false;
 	beach_line.insertArc(0, 0);
 	beach_line.insertArc(1, 1);
 	Idx middle = beach_line.insertArc(2, 2);

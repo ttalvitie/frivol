@@ -45,7 +45,8 @@ public:
 	/// nonempty, the arc under the new arc is split split in two, so that the
 	/// original arc is on the right from the new arc and an additional arc is
 	/// created to the left from the new arc.
-	/// @param site The origin site of the arc.
+	/// @param site The origin site of the arc. The arc is placed in the position
+	/// of the X-coordinate of the site.
 	/// @param sweepline_y The Y-coordinate of the sweep line that defines the
 	/// parabolas.
 	/// @returns the ID of the new arc.

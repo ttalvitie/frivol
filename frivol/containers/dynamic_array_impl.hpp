@@ -2,10 +2,7 @@ namespace frivol {
 namespace containers {
 
 template <typename T>
-DynamicArray<T>::DynamicArray()
-	: elements_(0),
-	  size_(0)
-{ }
+DynamicArray<T>::DynamicArray() : DynamicArray(0) { }
 
 template <typename T>
 DynamicArray<T>::DynamicArray(Idx size)
@@ -54,6 +51,8 @@ Idx DynamicArray<T>::add(const T& element) {
 	
 	elements_[size_] = element;
 	++size_;
+	
+	return size_ - 1;
 }
 
 }

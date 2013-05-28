@@ -18,6 +18,9 @@ class Array {
 public:
 	BOOST_CONCEPT_ASSERT((boost::DefaultConstructible<T>));
 	
+	/// Creates an array with size 0.
+	Array();
+	
 	/// Creates an array with all elements default-constructed.
 	/// @param size The size of the array.
 	Array(Idx size);
