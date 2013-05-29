@@ -9,82 +9,6 @@ using namespace frivol;
 
 BOOST_AUTO_TEST_SUITE(fortune_algorithm)
 
-BOOST_AUTO_TEST_CASE(two_horizontal_sites_zero_voronoi_vertices) {
-	containers::Array<Point<>> sites(2);
-	sites[0] = Point<>(0, 0);
-	sites[1] = Point<>(1, 0);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(0, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(two_vertical_sites_zero_voronoi_vertices) {
-	containers::Array<Point<>> sites(2);
-	sites[0] = Point<>(4, 3);
-	sites[1] = Point<>(4, 4);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(0, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(sites_in_triangle_one_voronoi_vertex) {
-	containers::Array<Point<>> sites(3);
-	sites[0] = Point<>(0, 0);
-	sites[1] = Point<>(2, 0);
-	sites[2] = Point<>(1, 1);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(1, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(diamond_two_voronoi_vertices) {
-	containers::Array<Point<>> sites(4);
-	sites[0] = Point<>(-2, 0);
-	sites[1] = Point<>(2, 0);
-	sites[2] = Point<>(0, -1);
-	sites[3] = Point<>(0, 1);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(2, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices) {
-	containers::Array<Point<>> sites(4);
-	sites[0] = Point<>(-1, 0);
-	sites[1] = Point<>(1, 0);
-	sites[2] = Point<>(0, 1);
-	sites[3] = Point<>(0, 2);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(3, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(hourglass_four_voronoi_vertices) {
-	containers::Array<Point<>> sites(5);
-	sites[0] = Point<>(-1, -2);
-	sites[1] = Point<>(1, -2);
-	sites[2] = Point<>(-1, 2);
-	sites[3] = Point<>(1, 2);
-	sites[4] = Point<>(0, 0);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(4, algo.getVoronoiVertexCount());
-}
-
-BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_vertices) {
-	int n = 341;
-	containers::Array<Point<>> sites(n + 1);
-	double twopi = 8 * std::atan(1.0);
-	for(int i = 0; i < n; ++i) {
-		double angle = i * twopi / n;
-		sites[i] = Point<>(std::cos(angle), std::sin(angle));
-	}
-	sites[n] = Point<>(0, 0);
-	fortune::Algorithm<> algo(sites);
-	algo.finish();
-	BOOST_CHECK_EQUAL(n, algo.getVoronoiVertexCount());
-}
-
 BOOST_AUTO_TEST_CASE(empty_voronoi_diagram) {
 	containers::Array<Point<>> sites;
 	fortune::Algorithm<> algo(sites);
@@ -179,6 +103,89 @@ BOOST_AUTO_TEST_CASE(three_site_voronoi_diagram) {
 	
 	// Check vertex position.
 	checkPointsClose(diagram.getVertexPosition(0), Point<>(1, 0));
+}
+
+BOOST_AUTO_TEST_CASE(diamond_voronoi_diagram) {
+	containers::Array<Point<>> sites(4);
+	sites[0] = Point<>(-2, 0);
+	sites[1] = Point<>(2, 0);
+	sites[2] = Point<>(0, -1);
+	sites[3] = Point<>(0, 1);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 4);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 10);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 2);
+	
+	Idx left_vertex, right_vertex;
+	if(diagram.getVertexPosition(0).x < diagram.getVertexPosition(1).x) {
+		left_vertex = 0;
+		right_vertex = 1;
+	} else {
+		left_vertex = 1;
+		right_vertex = 0;
+	}
+	
+	checkPointsClose(diagram.getVertexPosition(left_vertex), Point<>(-0.75, 0));
+	checkPointsClose(diagram.getVertexPosition(right_vertex), Point<>(0.75, 0));
+	
+	// Check that each face has the right amount of edges.
+	int face_edges[4] = {0};
+	for(int edge = 0; edge < 10; ++edge) {
+		++face_edges[diagram.getIncidentFace(edge)];
+	}
+	BOOST_CHECK_EQUAL(face_edges[0], 2);
+	BOOST_CHECK_EQUAL(face_edges[1], 2);
+	BOOST_CHECK_EQUAL(face_edges[2], 3);
+	BOOST_CHECK_EQUAL(face_edges[3], 3);
+}
+
+BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices_voronoi_diagram) {
+	containers::Array<Point<>> sites(4);
+	sites[0] = Point<>(-1, 0);
+	sites[1] = Point<>(1, 0);
+	sites[2] = Point<>(0, 1);
+	sites[3] = Point<>(0, 2);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 4);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 12);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 3);
+}
+
+
+BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_diagram) {
+	int n = 341;
+	containers::Array<Point<>> sites(n + 1);
+	double twopi = 8 * std::atan(1.0);
+	for(int i = 0; i < n; ++i) {
+		double angle = i * twopi / n;
+		sites[i] = Point<>(std::cos(angle), std::sin(angle));
+	}
+	sites[n] = Point<>(0, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), n + 1);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 4 * n);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), n);
+	
+	// Check that the cycles around faces have right sizes.
+	auto checkCycle = [&](Idx start_edge, Idx expected_count) {
+		Idx edge = start_edge;
+		Idx count = 0;
+		do {
+			BOOST_CHECK_EQUAL(diagram.getPreviousEdge(diagram.getNextEdge(edge)), edge);
+			++count;
+			edge = diagram.getNextEdge(edge);
+		} while(edge != start_edge);
+		BOOST_CHECK_EQUAL(count, expected_count);
+	};
+	checkCycle(diagram.getFaceBoundaryEdge(0), 3);
+	checkCycle(diagram.getFaceBoundaryEdge(3), 3);
+	checkCycle(diagram.getFaceBoundaryEdge(n), n);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
