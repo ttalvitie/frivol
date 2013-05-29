@@ -137,7 +137,7 @@ void Algorithm<PolicyT>::handleSiteEvent_(Idx site) {
 		Idx base_site = beach_line_.getOriginSite(right_arc_id);
 		
 		Idx left_edge, right_edge;
-		std::tie(left_edge, right_edge) = diagram_.addEdge(site, base_site);
+		std::tie(left_edge, right_edge) = diagram_.addEdge(base_site, site);
 		
 		// Mark the edges to the breakpoints drawing them.
 		breakpoint_edge_index_[left_arc_id] = left_edge;
@@ -151,14 +151,19 @@ void Algorithm<PolicyT>::handleCircleEvent_(Idx arc_id) {
 	Idx right_arc_id = beach_line_.getRightArc(arc_id);
 	
 	Idx left_site = beach_line_.getOriginSite(left_arc_id);
+	Idx site = beach_line_.getOriginSite(arc_id);
 	Idx right_site = beach_line_.getOriginSite(right_arc_id);
 	
 	// Add the new Voronoi vertex.
+	PointT vertex_pos = GeometryTraitsT::getCircumcenter(
+		sites_[left_site], sites_[site], sites_[right_site]
+	);
+	
 	Idx left_edge = breakpoint_edge_index_[left_arc_id];
-	Idx right_edge = breakpoint_edge_index_[right_arc_id];
+	Idx right_edge = breakpoint_edge_index_[arc_id];
 	Idx new_edge_in, new_edge_out;
-	std::tie(new_edge_in, new_edge_out) = diagram_.addEdge(right_site, left_site);
-	diagram_.addVertex(PointT(), new_edge_in, left_edge, right_edge);
+	std::tie(new_edge_out, new_edge_in) = diagram_.addEdge(left_site, right_site);
+	diagram_.addVertex(vertex_pos, new_edge_in, left_edge, right_edge);
 	
 	// Update the remaining breakpoint to draw the right edge.
 	breakpoint_edge_index_[left_arc_id] = new_edge_out;

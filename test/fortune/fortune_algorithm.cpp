@@ -110,7 +110,7 @@ BOOST_AUTO_TEST_CASE(one_site_voronoi_diagram) {
 BOOST_AUTO_TEST_CASE(two_site_voronoi_diagram) {
 	containers::Array<Point<>> sites(2);
 	sites[0] = Point<>(0, 0);
-	sites[0] = Point<>(1, 0);
+	sites[1] = Point<>(1, 0);
 	fortune::Algorithm<> algo(sites);
 	algo.finish();
 	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
@@ -130,6 +130,55 @@ BOOST_AUTO_TEST_CASE(two_site_voronoi_diagram) {
 		BOOST_CHECK_EQUAL(diagram.getNextEdge(edge), edge);
 		BOOST_CHECK_EQUAL(diagram.getPreviousEdge(edge), edge);
 	}
+}
+
+void checkPointsClose(Point<> a, Point<> b) {
+	BOOST_CHECK_CLOSE(a.x, b.x, 0.01);
+	BOOST_CHECK_CLOSE(a.y, b.y, 0.01);
+}
+
+BOOST_AUTO_TEST_CASE(three_site_voronoi_diagram) {
+	containers::Array<Point<>> sites(3);
+	sites[0] = Point<>(0, 0);
+	sites[1] = Point<>(2, 0);
+	sites[2] = Point<>(1, 1);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 3);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 6);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 1);
+	
+	// Each face should have two incident half-edges
+	for(int face = 0; face < 3; ++face) {
+		Idx edge1 = diagram.getFaceBoundaryEdge(face);
+		
+		// Make sure that edge1 is the edge to the vertex.
+		if(diagram.getEndVertex(edge1) != 0) edge1 = diagram.getNextEdge(edge1);
+		BOOST_CHECK_EQUAL(diagram.getEndVertex(edge1), 0);
+		
+		Idx edge2 = diagram.getNextEdge(edge1);
+		BOOST_CHECK(edge1 != edge2);
+		
+		// The edges should have other vertices marked correctly too.
+		BOOST_CHECK_EQUAL(diagram.getStartVertex(edge1), nil_idx);
+		BOOST_CHECK_EQUAL(diagram.getStartVertex(edge2), 0);
+		BOOST_CHECK_EQUAL(diagram.getEndVertex(edge2), nil_idx);
+		
+		// The edges should be previous and next to each other.
+		BOOST_CHECK_EQUAL(diagram.getPreviousEdge(edge2), edge1);
+		BOOST_CHECK_EQUAL(diagram.getNextEdge(edge2), edge1);
+		
+		BOOST_CHECK_EQUAL(diagram.getPreviousEdge(edge1), edge2);
+		BOOST_CHECK_EQUAL(diagram.getNextEdge(edge1), edge2);
+		
+		// The edges should have face marked as the incident face.
+		BOOST_CHECK_EQUAL(diagram.getIncidentFace(edge1), face);
+		BOOST_CHECK_EQUAL(diagram.getIncidentFace(edge2), face);
+	}
+	
+	// Check vertex position.
+	checkPointsClose(diagram.getVertexPosition(0), Point<>(1, 0));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
