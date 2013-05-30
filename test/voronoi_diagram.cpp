@@ -75,5 +75,20 @@ BOOST_AUTO_TEST_CASE(vertex_addition_works) {
 	BOOST_CHECK_EQUAL(vd.getNextEdge(edge2), vd.getTwinEdge(edge1));
 }
 
+BOOST_AUTO_TEST_CASE(consecutive_infinite_works) {
+	VoronoiDiagram<double> vd(3);
+	
+	Idx edge0, edge1;
+	edge0 = vd.addEdge(0, 1).first;
+	edge1 = vd.addEdge(1, 2).second;
+	
+	vd.consecutiveEdges(edge0, edge1);
+	vd.consecutiveEdges(edge1, edge0);
+	
+	BOOST_CHECK_EQUAL(vd.getNextEdge(edge0), edge1);
+	BOOST_CHECK_EQUAL(vd.getPreviousEdge(edge0), edge1);
+	BOOST_CHECK_EQUAL(vd.getNextEdge(edge1), edge0);
+	BOOST_CHECK_EQUAL(vd.getPreviousEdge(edge1), edge0);
+}
 
 BOOST_AUTO_TEST_SUITE_END()
