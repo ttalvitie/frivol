@@ -22,6 +22,7 @@ file(
 	containers/dynamic_array.cpp
 	fortune/fortune_algorithm.cpp
 	fortune/beach_line.cpp
+	voronoi_diagram.cpp
 	geometry_traits_float.cpp 
 )
 add_executable(test ${TEST_SOURCES})
