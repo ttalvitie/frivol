@@ -10,4 +10,5 @@ do
 	pdflatex maarittelydokumentti.tex
 	pdflatex viikkoraportti1.tex
 	pdflatex viikkoraportti2.tex
+	pdflatex viikkoraportti3.tex
 done

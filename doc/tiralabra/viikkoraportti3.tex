@@ -1,0 +1,30 @@
+\documentclass[a4paper, 11pt, finnish]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\author{Topi Talvitie}
+\title{frivol: Viikkoraportti 3}
+
+\begin{document}
+\maketitle
+
+Kolmannella viikolla valmistui projektin ydinalue, eli Fortunen algoritmi. Jäljellä oleva asia oli siis algoritmin tuloksen tallentamiseen vaadittavan tietorakenteen (VoronoiDiagram) suunnittelu ja toteutus, sekä tämän täyttävän koodin lisääminen algoritmin toteutukseen. VoronoiDiagramin rajapinnan miettimisessä meni aika kauan. Lopputuloksena päädyin melko lailla samantyyliseen rakenteeseen kuin half-edge-rakenne kirjassa\cite{compgeomkirja}, joka on mielestäni selkein ja käytännöllisin tähän.
+
+VoronoiDiagramin ja vastaavan algoritmikoodin tekeminen oli melko bugialtista, sillä siinä pitää miettiä paljon orientaatioita ja piirrellä apukuvia, mutta testien avulla sain sen melko kivutta tehtyä. Tein testeistä aika isoja, sillä kokonaisten geometristen kokonaisuuksien tarkistamisessa ei tuntunut olevan järkeä funktio kerrallaan.
+
+Seuraavaksi pitäisi vihdoin päästä toteuttamaan binäärikeko ja jokin tasapainotettu binääripuu, ja näiden jälkeen suorituskykytestata. Sitten jäljellä on enää komentorivikäyttöliittymä ja visualisointiohjelma. 
+
+Visualisointiohjelmasta tuli mieleen villi ajatus - mitä jos tekisinkin sen selaimella ajettavaksi? Kirjaston voisi kääntää JavaScriptiksi emscripten-kääntäjällä, ja käyttöliittymäpuolen voisi tehdä JavaScriptillä käyttämällä HTML5 Canvasta. Samalla tulisi varmistettua kirjaston yhteensopivuus emscriptenin kanssa. Olen leikkinyt emscriptenillä ennenkin, joten siinä ei pitäisi olla liikaa vaivaa. Emscriptenissä työläintä on JavaScript- ja C++-puolien välinen viestintä, ja sitä ei tässä tapauksessa ole paljon (yksi funktio, joka ottaa listan pisteitä ja palauttaa sopivassa muodossa Voronoi-diagrammin).
+
+\begin{thebibliography}{9}
+\bibitem{compgeomkirja} M. de Berg, M. van Kreveld, M. Overmars, O. Schwarzkopf, \emph{Computational geometry}, 2nd revised edition, Springer-Verlag 2000, sivut 151-160.
+\end{thebibliography}
+
+\end{document}
