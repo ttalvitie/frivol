@@ -105,6 +105,19 @@ BOOST_AUTO_TEST_CASE(three_site_voronoi_diagram) {
 	checkPointsClose(diagram.getVertexPosition(0), Point<>(1, 0));
 }
 
+BOOST_AUTO_TEST_CASE(three_site_voronoi_diagram_flipped) {
+	containers::Array<Point<>> sites(3);
+	sites[0] = Point<>(2, 0);
+	sites[1] = Point<>(0, 0);
+	sites[2] = Point<>(1, 1);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	const VoronoiDiagram<double>& diagram = algo.getVoronoiDiagram();
+	BOOST_CHECK_EQUAL(diagram.getFaceCount(), 3);
+	BOOST_CHECK_EQUAL(diagram.getEdgeCount(), 6);
+	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 1);
+}
+
 BOOST_AUTO_TEST_CASE(diamond_voronoi_diagram) {
 	containers::Array<Point<>> sites(4);
 	sites[0] = Point<>(-2, 0);
