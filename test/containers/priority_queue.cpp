@@ -86,4 +86,35 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(big_sort, PriorityQueue, PriorityQueueTypes) {
 	}
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(binary_heap_removal_hard_case, PriorityQueue, PriorityQueueTypes) {
+	PriorityQueue q(17);
+	q.setPriority(0, 0);
+	q.setPriority(10, 10);
+	q.setPriority(1, 1);
+	q.setPriority(11, 11);
+	q.setPriority(12, 12);
+	q.setPriority(2, 2);
+	q.setPriority(5, 5);
+	q.setPriority(13, 13);
+	q.setPriority(14, 14);
+	q.setPriority(15, 15);
+	q.setPriority(16, 16);
+	q.setPriority(4, 4);
+	q.setPriority(3, 3);
+	q.setPriorityNIL(13);
+	BOOST_CHECK_EQUAL(q.pop().first, 0);
+	BOOST_CHECK_EQUAL(q.pop().first, 1);
+	BOOST_CHECK_EQUAL(q.pop().first, 2);
+	BOOST_CHECK_EQUAL(q.pop().first, 3);
+	BOOST_CHECK_EQUAL(q.pop().first, 4);
+	BOOST_CHECK_EQUAL(q.pop().first, 5);
+	BOOST_CHECK_EQUAL(q.pop().first, 10);
+	BOOST_CHECK_EQUAL(q.pop().first, 11);
+	BOOST_CHECK_EQUAL(q.pop().first, 12);
+	BOOST_CHECK_EQUAL(q.pop().first, 14);
+	BOOST_CHECK_EQUAL(q.pop().first, 15);
+	BOOST_CHECK_EQUAL(q.pop().first, 16);
+	BOOST_CHECK(q.empty());
+}
+
 BOOST_AUTO_TEST_SUITE_END()
