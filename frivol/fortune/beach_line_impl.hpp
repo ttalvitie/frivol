@@ -23,7 +23,7 @@ Idx BeachLine<PolicyT>::getMaxArcCount() const {
 template <typename PolicyT>
 Idx BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepline_y) {
 	// Update site ordering.
-	site_order_[next_site_order_++];
+	site_order_[site] = next_site_order_++;
 	
 	// Search for an arc on which to place the new arc.
 	const CoordT& x = sites_[site].x;
@@ -159,9 +159,9 @@ typename PolicyT::Coord BeachLine<PolicyT>::getBreakpointX_(
 	
 	// The site with lower order number has arc below the other site's arc.
 	if(site_order_[site1] < site_order_[site2]) {
-		positive_big = true;
-	} else {
 		positive_big = false;
+	} else {
+		positive_big = true;
 	}
 	
 	return GeometryTraitsT::getBreakpointX(
