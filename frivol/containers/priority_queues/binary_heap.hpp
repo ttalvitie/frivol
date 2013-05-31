@@ -51,7 +51,15 @@ private:
 	/// @returns true if element at heap_idx1 has higher priority than heap_idx2.
 	bool hasHigherPriority_(Idx heap_idx1, Idx heap_idx2);
 	
-	void checkIntegrity_();
+	/// Bubble heap element towards the top as long as it has higher priority
+	/// than the parent.
+	/// @param heap_idx The current heap index of the element.
+	void bubbleUp_(Idx heap_idx);
+	
+	/// Bubble heap element away from the top as long as it has a child with
+	/// higher priority.
+	/// @param heap_idx The current heap index of the element.
+	void bubbleDown_(Idx heap_idx);
 	
 	typedef boost::optional<PriorityT> OptionalPriorityT;
 	

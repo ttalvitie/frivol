@@ -17,7 +17,6 @@ std::pair<Idx, PriorityT> BinaryHeap<PriorityT>::pop() {
 	priorities_[top_key].reset();
 	
 	removeFromHeap_(0);
-	checkIntegrity_();
 	
 	return std::make_pair(top_key, top_priority);
 }
@@ -29,25 +28,18 @@ bool BinaryHeap<PriorityT>::empty() const {
 
 template <typename PriorityT>
 void BinaryHeap<PriorityT>::setPriority(Idx key, PriorityT priority) {
-	// If the element is in the heap already, remove it.
+	// If the element is in the heap already, remove it so we can add it again.
 	setPriorityNIL(key);
 	
 	priorities_[key] = priority;
 	
-	// Add it to the end of the heap and bubble up.
 	Idx heap_idx = heap_size_;
 	++heap_size_;
 	
 	heap_[heap_idx] = key;
 	heap_indices_[key] = heap_idx;
 	
-	while(heap_idx != 0) {
-		Idx parent = getHeapParent_(heap_idx);
-		if(hasHigherPriority_(parent, heap_idx)) break;
-		swapInHeap_(heap_idx, parent);
-		heap_idx = parent;
-	}
-	checkIntegrity_();
+	bubbleUp_(heap_idx);
 }
 
 template <typename PriorityT>
@@ -56,7 +48,6 @@ void BinaryHeap<PriorityT>::setPriorityNIL(Idx key) {
 	
 	priorities_[key].reset();
 	removeFromHeap_(heap_indices_[key]);
-	checkIntegrity_();
 }
 
 template <typename PriorityT>
@@ -80,26 +71,11 @@ void BinaryHeap<PriorityT>::removeFromHeap_(Idx heap_idx) {
 	
 	if(heap_idx == heap_size_) return;
 	
-	// Move the last element to the position and bubble down.
 	heap_[heap_idx] = heap_[heap_size_];
 	heap_indices_[heap_[heap_idx]] = heap_idx;
 	
-	while(getHeapLeftChild_(heap_idx) < heap_size_) {
-		Idx left = getHeapLeftChild_(heap_idx);
-		Idx right = getHeapRightChild_(heap_idx);
-		
-		Idx priority_child;
-		if(right == heap_size_ || hasHigherPriority_(left, right)) {
-			priority_child = left;
-		} else {
-			priority_child = right;
-		}
-		
-		if(hasHigherPriority_(heap_idx, priority_child)) break;
-		
-		swapInHeap_(heap_idx, priority_child);
-		heap_idx = priority_child;
-	}
+	bubbleDown_(heap_idx);
+	bubbleUp_(heap_idx);
 }
 
 template <typename PriorityT>
@@ -115,23 +91,32 @@ bool BinaryHeap<PriorityT>::hasHigherPriority_(Idx heap_idx1, Idx heap_idx2) {
 }
 
 template <typename PriorityT>
-void BinaryHeap<PriorityT>::checkIntegrity_() {
-	Idx nonnil = 0;
-	for(Idx i = 0; i < heap_.getSize(); ++i) {
-		if(priorities_[i].get_ptr() != nullptr) ++nonnil;
+void BinaryHeap<PriorityT>::bubbleUp_(Idx heap_idx) {
+	while(heap_idx != 0) {
+		Idx parent = getHeapParent_(heap_idx);
+		if(hasHigherPriority_(parent, heap_idx)) break;
+		swapInHeap_(heap_idx, parent);
+		heap_idx = parent;
 	}
-	assert(nonnil == heap_size_);
-	
-	for(Idx i = 0; i < heap_size_; ++i) {
-		assert(heap_indices_[heap_[i]] == i);
-		Idx left = getHeapLeftChild_(i);
-		Idx right = getHeapLeftChild_(i);
-		if(left < heap_size_) {
-			assert(!hasHigherPriority_(left, i));
+}
+
+template <typename PriorityT>
+void BinaryHeap<PriorityT>::bubbleDown_(Idx heap_idx) {
+	while(getHeapLeftChild_(heap_idx) < heap_size_) {
+		Idx left = getHeapLeftChild_(heap_idx);
+		Idx right = getHeapRightChild_(heap_idx);
+		
+		Idx priority_child;
+		if(right == heap_size_ || hasHigherPriority_(left, right)) {
+			priority_child = left;
+		} else {
+			priority_child = right;
 		}
-		if(right < heap_size_) {
-			assert(!hasHigherPriority_(right, i));
-		}
+		
+		if(hasHigherPriority_(heap_idx, priority_child)) break;
+		
+		swapInHeap_(heap_idx, priority_child);
+		heap_idx = priority_child;
 	}
 }
 
