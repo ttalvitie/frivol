@@ -103,6 +103,12 @@ private:
 	/// parabolas.
 	int orderArcX_(const CoordT& x, Idx arc_id, const CoordT& sweepline_y);
 	
+	/// Get the breakpoint X coordinate between the parabolas of two sites.
+	/// @param site1,site2 Two sites added to the beach line, from left to right
+	/// in the beach line.
+	/// @param sweepline_y The Y-coordinate of the sweep line that defines the
+	/// parabolas.
+	CoordT getBreakpointX_(Idx site1, Idx site2, const CoordT& sweepline_y);
 	
 	/// Array of input point sites.
 	const containers::Array<PointT>& sites_;
@@ -119,6 +125,13 @@ private:
 	/// Mapping from beach line arc IDs to their corresponding iterators
 	/// in beach_line_.
 	containers::Array<SearchTreeIteratorT> arc_iterators_by_id_;
+	
+	/// Ordering numbers of the sites inserted with insertArc. The next order
+	/// number is next_site_order_.
+	containers::Array<Idx> site_order_;
+	
+	/// Next free site ordering number in site_order_.
+	Idx next_site_order_;
 };
 
 }

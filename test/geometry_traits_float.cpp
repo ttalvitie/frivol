@@ -40,14 +40,6 @@ BOOST_AUTO_TEST_CASE(breakpoint_vertical_sites) {
 	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(b, a, 2, true), 1 + std::sqrt(2.0), eps);
 }
 
-BOOST_AUTO_TEST_CASE(breakpoint_equal_sites) {
-	PointT a(1, 3);
-	
-	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, a, 3, false), a.x, eps);
-	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, a, 3.1, false), a.x, eps);
-	BOOST_CHECK_CLOSE(TraitsT::getBreakpointX(a, a, 4, true), a.x, eps);
-}
-
 BOOST_AUTO_TEST_CASE(breakpoint_right_infinity) {
 	PointT a(0, 0);
 	PointT b(1, 0);

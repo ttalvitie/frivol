@@ -5,7 +5,9 @@ template <typename PolicyT>
 BeachLine<PolicyT>::BeachLine(const containers::Array<PointT>& sites, Idx max_arcs)
 	: sites_(sites),
 	  max_arcs_(max_arcs),
-	  arc_iterators_by_id_(max_arcs)
+	  arc_iterators_by_id_(max_arcs),
+	  site_order_(sites.getSize()),
+	  next_site_order_(0)
 {
 	// Initially, all arc IDs are free.
 	for(Idx arc_id = 0; arc_id < max_arcs_; ++arc_id) {
@@ -20,6 +22,9 @@ Idx BeachLine<PolicyT>::getMaxArcCount() const {
 
 template <typename PolicyT>
 Idx BeachLine<PolicyT>::insertArc(Idx site, const CoordT& sweepline_y) {
+	// Update site ordering.
+	site_order_[next_site_order_++];
+	
 	// Search for an arc on which to place the new arc.
 	const CoordT& x = sites_[site].x;
 	
@@ -132,24 +137,39 @@ int BeachLine<PolicyT>::orderArcX_(
 	if(left_arc_id != nil_idx) {
 		Idx left_site = getOriginSite(left_arc_id);
 		
-		CoordT breakpoint_x = GeometryTraitsT::getBreakpointX(
-			sites_[left_site], sites_[site], sweepline_y, false
-		);
-		
-		if(x < breakpoint_x) return -1;
+		if(x < getBreakpointX_(left_site, site, sweepline_y)) return -1;
 	}
 	
 	if(right_arc_id != nil_idx) {
 		Idx right_site = getOriginSite(right_arc_id);
 		
-		CoordT breakpoint_x = GeometryTraitsT::getBreakpointX(
-			sites_[site], sites_[right_site], sweepline_y, true
-		);
-		
-		if(x > breakpoint_x) return 1;
+		if(x > getBreakpointX_(site, right_site, sweepline_y)) return 1;
 	}
 	
 	return 0;
+}
+
+template <typename PolicyT>
+typename PolicyT::Coord BeachLine<PolicyT>::getBreakpointX_(
+	Idx site1,
+	Idx site2,
+	const CoordT& sweepline_y
+) {
+	bool positive_big;
+	
+	// The site with lower order number has arc below the other site's arc.
+	if(site_order_[site1] < site_order_[site2]) {
+		positive_big = true;
+	} else {
+		positive_big = false;
+	}
+	
+	return GeometryTraitsT::getBreakpointX(
+		sites_[site1],
+		sites_[site2],
+		sweepline_y,
+		positive_big
+	);
 }
 
 }

@@ -25,7 +25,7 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 	// If the points are on the same level, the result is either in the middle
 	// or in infinity, because the parabolas meet only once.
 	if(std::abs(v) < epsilon) {
-		if(u > -epsilon) {
+		if(u > 0.0) {
 			return 0.5 * (a.x + b.x);
 		} else {
 			if(positive_big) {
