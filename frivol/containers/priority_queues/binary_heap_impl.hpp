@@ -28,11 +28,12 @@ bool BinaryHeap<PriorityT>::empty() const {
 
 template <typename PriorityT>
 void BinaryHeap<PriorityT>::setPriority(Idx key, PriorityT priority) {
-	// If the element is in the heap already, remove it so we can add it again.
+	// If the element is in the heap already, remove it.
 	setPriorityNIL(key);
 	
 	priorities_[key] = priority;
 	
+	// Add the element to the end and bubble it to the right place.
 	Idx heap_idx = heap_size_;
 	++heap_size_;
 	
@@ -71,6 +72,7 @@ void BinaryHeap<PriorityT>::removeFromHeap_(Idx heap_idx) {
 	
 	if(heap_idx == heap_size_) return;
 	
+	// Move the last element in the place and restore heap property by bubbling.
 	heap_[heap_idx] = heap_[heap_size_];
 	heap_indices_[heap_[heap_idx]] = heap_idx;
 	
