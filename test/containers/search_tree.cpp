@@ -4,6 +4,7 @@
 #include <frivol/containers/search_tree_concept.hpp>
 
 #include <frivol/containers/search_trees/dummy_search_tree.hpp>
+#include <frivol/containers/search_trees/avl_tree.hpp>
 
 using namespace frivol;
 using namespace frivol::containers;
@@ -11,7 +12,7 @@ using namespace frivol::containers::search_trees;
 
 BOOST_AUTO_TEST_SUITE(search_tree)
 
-typedef boost::mpl::list<DummySearchTree<int>> SearchTreeTypes;
+typedef boost::mpl::list<DummySearchTree<int>, AVLTree<int>> SearchTreeTypes;
 
 BOOST_AUTO_TEST_CASE_TEMPLATE(implements_concept, SearchTree, SearchTreeTypes) {
 	BOOST_CONCEPT_ASSERT((SearchTreeConcept<SearchTree, int>));

@@ -23,7 +23,7 @@ namespace containers {
 ///    otherwise end() is returned.
 ///  - void erase(Iterator iter) removes element at iter. Other iterators
 ///    should not be invalidated.
-///  - Iterators insert(Iterator iter, const ElementT& elem) inserts elem before
+///  - Iterator insert(Iterator iter, const ElementT& elem) inserts elem before
 ///    iter and returns the iterator of the new element. Does not invalidate any
 ///    iterators.
 /// 

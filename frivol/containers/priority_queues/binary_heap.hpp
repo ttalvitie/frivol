@@ -10,7 +10,7 @@ namespace frivol {
 namespace containers {
 namespace priority_queues {
 
-/// Simple implementation of PriorityQueueConcept.
+/// Implementation of PriorityQueueConcept using a binary heap.
 template <typename PriorityT>
 class BinaryHeap {
 public:
