@@ -51,6 +51,24 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(iteration_works, SearchTree, SearchTreeTypes) {
 	BOOST_CHECK(iter == t.end());
 }
 
+BOOST_AUTO_TEST_CASE_TEMPLATE(iteration_works2, SearchTree, SearchTreeTypes) {
+	SearchTree t;
+	auto iter = t.end();
+	iter = t.insert(iter, 0);
+	auto iter2 = t.insert(iter, 1);
+	t.insert(iter, 2);
+	t.insert(iter2, 3);
+	t.insert(iter2, 4);
+	t.erase(iter2);
+	
+	iter = t.begin();
+	BOOST_CHECK_EQUAL(*iter++, 3);
+	BOOST_CHECK_EQUAL(*iter++, 4);
+	BOOST_CHECK_EQUAL(*iter++, 2);
+	BOOST_CHECK_EQUAL(*iter++, 0);
+	BOOST_CHECK(iter == t.end());
+}
+
 BOOST_AUTO_TEST_CASE_TEMPLATE(search_positive_works, SearchTree, SearchTreeTypes) {
 	SearchTree t;
 	typedef typename SearchTree::Iterator Iterator;
