@@ -20,6 +20,7 @@ file(
 	containers/search_tree.cpp
 	containers/stack.cpp
 	containers/dynamic_array.cpp
+	containers/avl_node.cpp
 	fortune/fortune_algorithm.cpp
 	fortune/beach_line.cpp
 	voronoi_diagram.cpp
