@@ -141,6 +141,10 @@ void AVLNode<ElementT>::rotateRight(std::unique_ptr<AVLNodeT>& root_ptr) {
 	if(top->right_->left_ != nullptr) {
 		top->right_->left_->parent_ = top->right_.get();
 	}
+	
+	top->right_->updateHeight_();
+	top->updateHeight_();
+	if(top_node != nullptr) top_node->updateHeight_();
 }
 
 template <typename ElementT>
@@ -162,13 +166,17 @@ void AVLNode<ElementT>::rotateLeft(std::unique_ptr<AVLNodeT>& root_ptr) {
 	if(top->left_->right_ != nullptr) {
 		top->left_->right_->parent_ = top->left_.get();
 	}
+	
+	top->left_->updateHeight_();
+	top->updateHeight_();
+	if(top_node != nullptr) top_node->updateHeight_();
 }
 
 template <typename ElementT>
 void AVLNode<ElementT>::updateHeight_() {
 	Idx new_height = 1;
-	if(left_ != nullptr) new_height = std::min(new_height, left_->getHeight() + 1);
-	if(right_ != nullptr) new_height = std::min(new_height, right_->getHeight() + 1);
+	if(left_ != nullptr) new_height = std::max(new_height, left_->getHeight() + 1);
+	if(right_ != nullptr) new_height = std::max(new_height, right_->getHeight() + 1);
 	if(height_ != new_height) {
 		height_ = new_height;
 		if(parent_ != nullptr) {

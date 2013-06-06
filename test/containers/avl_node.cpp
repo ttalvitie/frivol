@@ -11,6 +11,22 @@ typedef AVLNode<int> AVLNodeT;
 
 BOOST_AUTO_TEST_SUITE(avl_node)
 
+void assertHeightsCorrect(AVLNodeT* node) {
+	if(node == nullptr) return;
+	
+	AVLNodeT* left = node->getLeftChild();
+	AVLNodeT* right = node->getRightChild();
+	
+	assertHeightsCorrect(left);
+	assertHeightsCorrect(right);
+	
+	Idx height = 1;
+	if(left != nullptr) height = std::max(height, left->getHeight() + 1);
+	if(right != nullptr) height = std::max(height, right->getHeight() + 1);
+	
+	BOOST_CHECK_EQUAL(node->getHeight(), height);
+}
+
 BOOST_AUTO_TEST_CASE(basic_construction_works) {
 	AVLNodeT root(0);
 	AVLNodeT* node = &root;
@@ -47,6 +63,8 @@ BOOST_AUTO_TEST_CASE(basic_construction_works) {
 	BOOST_CHECK_EQUAL(nodeLL->getRightChild(), (AVLNodeT*)nullptr);
 	BOOST_CHECK_EQUAL(nodeRL->getRightChild(), (AVLNodeT*)nullptr);
 	BOOST_CHECK_EQUAL(nodeRR->getRightChild(), (AVLNodeT*)nullptr);
+	
+	assertHeightsCorrect(node);
 }
 
 void assertSubtreesEqual(AVLNodeT* tree1, AVLNodeT* tree2, bool should_be_root = true) {
@@ -91,6 +109,7 @@ BOOST_AUTO_TEST_CASE(right_rotation_on_root_works) {
 	cmp->getRightChild()->createRightChild(4);
 	
 	assertSubtreesEqual(root.get(), cmp.get());
+	assertHeightsCorrect(root.get());
 }
 
 BOOST_AUTO_TEST_CASE(left_rotation_on_root_works) {
@@ -111,6 +130,7 @@ BOOST_AUTO_TEST_CASE(left_rotation_on_root_works) {
 	cmp->getLeftChild()->createLeftChild(4);
 	
 	assertSubtreesEqual(root.get(), cmp.get());
+	assertHeightsCorrect(root.get());
 }
 
 BOOST_AUTO_TEST_CASE(left_rotation_on_non_root_works) {
@@ -133,6 +153,22 @@ BOOST_AUTO_TEST_CASE(left_rotation_on_non_root_works) {
 	cmp->getLeftChild()->getLeftChild()->createLeftChild(4);
 	
 	assertSubtreesEqual(root.get(), cmp.get());
+	assertHeightsCorrect(root.get());
+}
+
+BOOST_AUTO_TEST_CASE(right_rotation_with_two_vertices_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
+	AVLNodeT* A = root.get();
+	AVLNodeT* B = A->createLeftChild(1);
+	A->rotateRight(root);
+	BOOST_CHECK_EQUAL(root.get(), B);
+	BOOST_CHECK_EQUAL(B->getParent(), (AVLNodeT*)nullptr);
+	BOOST_CHECK_EQUAL(A->getParent(), B);
+	BOOST_CHECK_EQUAL(A->getLeftChild(), (AVLNodeT*)nullptr);
+	BOOST_CHECK_EQUAL(A->getRightChild(), (AVLNodeT*)nullptr);
+	BOOST_CHECK_EQUAL(B->getLeftChild(), (AVLNodeT*)nullptr);
+	BOOST_CHECK_EQUAL(B->getRightChild(), A);
+	assertHeightsCorrect(root.get());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
