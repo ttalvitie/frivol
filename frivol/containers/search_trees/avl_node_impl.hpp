@@ -120,32 +120,48 @@ int AVLNode<ElementT>::getBalanceFactor() {
 
 template <typename ElementT>
 void AVLNode<ElementT>::rotateRight(std::unique_ptr<AVLNodeT>& root_ptr) {
-	AVLNodeT* top_node = parent_.get();
+	AVLNodeT* top_node = parent_;
 	std::unique_ptr<AVLNodeT>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
 	
-	// Rotate structure by left- and right-pointers.
-	std::tie(top, top->left_, top->left_->right_) =
-		std::move(std::make_tuple(top->left_, top->right_->left_, top));
+	//     X          Y     //
+	//    / \        / \    //
+	//   Y   C  ->  A   X   //
+	//  / \            / \  //
+	// A  B           B   C //
+	std::unique_ptr<AVLNodeT> X = std::move(top);
+	std::unique_ptr<AVLNodeT> Y = std::move(X->left_);
+	std::unique_ptr<AVLNodeT> B = std::move(Y->right_);
 	
-	// Update parent pointers.
+	top = std::move(Y);
+	top->right_ = std::move(X);
+	top->right_->left_ = std::move(B);
+	
 	top->parent_ = top_node;
 	top->right_->parent_ = top.get();
-	top->right_->left_->parent_ = top->right_.get();
+	if(top->right_->left_ != nullptr) {
+		top->right_->left_->parent_ = top->right_.get();
+	}
 }
 
 template <typename ElementT>
 void AVLNode<ElementT>::rotateLeft(std::unique_ptr<AVLNodeT>& root_ptr) {
-	AVLNodeT* top_node = parent_.get();
+	AVLNodeT* top_node = parent_;
 	std::unique_ptr<AVLNodeT>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
 	
-	// Rotate structure by right- and left-pointers.
-	std::tie(top, top->right_, top->right_->left_) =
-		std::move(std::make_tuple(top->right_, top->left_->right_, top));
+	// Analogous to rotateRight, see comments there.
+	std::unique_ptr<AVLNodeT> X = std::move(top);
+	std::unique_ptr<AVLNodeT> Y = std::move(X->right_);
+	std::unique_ptr<AVLNodeT> B = std::move(Y->left_);
 	
-	// Update parent pointers.
+	top = std::move(Y);
+	top->left_ = std::move(X);
+	top->left_->right_ = std::move(B);
+	
 	top->parent_ = top_node;
 	top->left_->parent_ = top.get();
-	top->left_->right_->parent_ = top->left_.get();
+	if(top->left_->right_ != nullptr) {
+		top->left_->right_->parent_ = top->left_.get();
+	}
 }
 
 template <typename ElementT>
@@ -164,10 +180,10 @@ void AVLNode<ElementT>::updateHeight_() {
 template <typename ElementT>
 std::unique_ptr<AVLNode<ElementT>>* AVLNode<ElementT>::getOwner_() {
 	if(parent_ == nullptr) return nullptr;
-	if(parent_->left_ == this) {
-		return &parent_->left;
+	if(parent_->left_.get() == this) {
+		return &parent_->left_;
 	} else {
-		return &parent_->right;
+		return &parent_->right_;
 	}
 }
 

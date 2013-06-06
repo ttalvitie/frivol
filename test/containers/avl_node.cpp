@@ -11,31 +11,6 @@ typedef AVLNode<int> AVLNodeT;
 
 BOOST_AUTO_TEST_SUITE(avl_node)
 
-void assertSubtreesEqual(AVLNodeT* tree1, AVLNodeT* tree2, bool not_a_root = false) {
-	BOOST_CHECK_EQUAL(tree1 == nullptr, tree2 == nullptr);
-	if(tree1 == nullptr) return;
-	
-	BOOST_CHECK_EQUAL(tree1->getElement(), tree2->getElement());
-	
-	if(not_a_root) {
-		BOOST_CHECK(tree1->getParent() != nullptr);
-		BOOST_CHECK(tree2->getParent() != nullptr);
-	}
-	BOOST_CHECK(
-		tree1->getParent() == nullptr ||
-		tree1->getParent()->getLeftChild() == tree1 ||
-		tree1->getParent()->getLeftChild() == tree1
-	);
-	BOOST_CHECK(
-		tree2->getParent() == nullptr ||
-		tree2->getParent()->getLeftChild() == tree2 ||
-		tree2->getParent()->getLeftChild() == tree2
-	);
-	
-	assertSubtreesEqual(tree1->getLeftChild(), tree2->getLeftChild(), true);
-	assertSubtreesEqual(tree1->getRightChild(), tree2->getRightChild(), true);
-}
-
 BOOST_AUTO_TEST_CASE(basic_construction_works) {
 	AVLNodeT root(0);
 	AVLNodeT* node = &root;
@@ -72,6 +47,92 @@ BOOST_AUTO_TEST_CASE(basic_construction_works) {
 	BOOST_CHECK_EQUAL(nodeLL->getRightChild(), (AVLNodeT*)nullptr);
 	BOOST_CHECK_EQUAL(nodeRL->getRightChild(), (AVLNodeT*)nullptr);
 	BOOST_CHECK_EQUAL(nodeRR->getRightChild(), (AVLNodeT*)nullptr);
+}
+
+void assertSubtreesEqual(AVLNodeT* tree1, AVLNodeT* tree2, bool should_be_root = true) {
+	BOOST_CHECK_EQUAL(tree1 == nullptr, tree2 == nullptr);
+	if(tree1 == nullptr) return;
+	
+	BOOST_CHECK_EQUAL(tree1->getElement(), tree2->getElement());
+	
+	BOOST_CHECK_EQUAL(tree1->getParent() == nullptr, should_be_root);
+	BOOST_CHECK_EQUAL(tree2->getParent() == nullptr, should_be_root);
+	
+	BOOST_CHECK(
+		tree1->getParent() == nullptr ||
+		tree1->getParent()->getLeftChild() == tree1 ||
+		tree1->getParent()->getRightChild() == tree1
+	);
+	BOOST_CHECK(
+		tree2->getParent() == nullptr ||
+		tree2->getParent()->getLeftChild() == tree2 ||
+		tree2->getParent()->getRightChild() == tree2
+	);
+	
+	assertSubtreesEqual(tree1->getLeftChild(), tree2->getLeftChild(), false);
+	assertSubtreesEqual(tree1->getRightChild(), tree2->getRightChild(), false);
+}
+
+BOOST_AUTO_TEST_CASE(right_rotation_on_root_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
+	AVLNodeT* Q = root.get();
+	AVLNodeT* P = Q->createLeftChild(1);
+	P->createLeftChild(2);
+	P->createRightChild(3);
+	Q->createRightChild(4);
+	
+	Q->rotateRight(root);
+	BOOST_CHECK_EQUAL(root.get(), P);
+	
+	std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(1));
+	cmp->createLeftChild(2);
+	cmp->createRightChild(0);
+	cmp->getRightChild()->createLeftChild(3);
+	cmp->getRightChild()->createRightChild(4);
+	
+	assertSubtreesEqual(root.get(), cmp.get());
+}
+
+BOOST_AUTO_TEST_CASE(left_rotation_on_root_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
+	AVLNodeT* Q = root.get();
+	AVLNodeT* P = Q->createRightChild(1);
+	P->createRightChild(2);
+	P->createLeftChild(3);
+	Q->createLeftChild(4);
+	
+	Q->rotateLeft(root);
+	BOOST_CHECK_EQUAL(root.get(), P);
+	
+	std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(1));
+	cmp->createRightChild(2);
+	cmp->createLeftChild(0);
+	cmp->getLeftChild()->createRightChild(3);
+	cmp->getLeftChild()->createLeftChild(4);
+	
+	assertSubtreesEqual(root.get(), cmp.get());
+}
+
+BOOST_AUTO_TEST_CASE(left_rotation_on_non_root_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(-1));
+	AVLNodeT* X = root.get();
+	AVLNodeT* Q = X->createLeftChild(0);
+	AVLNodeT* P = Q->createRightChild(1);
+	P->createRightChild(2);
+	P->createLeftChild(3);
+	Q->createLeftChild(4);
+	
+	Q->rotateLeft(root);
+	BOOST_CHECK_EQUAL(root.get(), X);
+	
+	std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(-1));
+	cmp->createLeftChild(1);
+	cmp->getLeftChild()->createRightChild(2);
+	cmp->getLeftChild()->createLeftChild(0);
+	cmp->getLeftChild()->getLeftChild()->createRightChild(3);
+	cmp->getLeftChild()->getLeftChild()->createLeftChild(4);
+	
+	assertSubtreesEqual(root.get(), cmp.get());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
