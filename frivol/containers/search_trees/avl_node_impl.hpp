@@ -77,11 +77,11 @@ AVLNode<ElementT>* AVLNode<ElementT>::getPreviousNode() {
 		while(true) {
 			if(node->parent_ == nullptr) return nullptr;
 			
-			if(node->parent_->right_ == this) {
-				return node->parent;
+			if(node->parent_->right_.get() == node) {
+				return node->parent_;
 			}
 			
-			node = node->parent;
+			node = node->parent_;
 		}
 	}
 }
@@ -95,11 +95,11 @@ AVLNode<ElementT>* AVLNode<ElementT>::getNextNode() {
 		while(true) {
 			if(node->parent_ == nullptr) return nullptr;
 			
-			if(node->parent_->left_ == this) {
-				return node->parent;
+			if(node->parent_->left_.get() == node) {
+				return node->parent_;
 			}
 			
-			node = node->parent;
+			node = node->parent_;
 		}
 	}
 }

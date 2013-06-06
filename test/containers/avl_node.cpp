@@ -171,4 +171,33 @@ BOOST_AUTO_TEST_CASE(right_rotation_with_two_vertices_works) {
 	assertHeightsCorrect(root.get());
 }
 
+BOOST_AUTO_TEST_CASE(traversal_works) {
+	// Tree with elements in order.
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(3));
+	root->createLeftChild(2);
+	root->getLeftChild()->createLeftChild(0);
+	root->getLeftChild()->getLeftChild()->createRightChild(1);
+	root->createRightChild(6);
+	root->getRightChild()->createLeftChild(4);
+	root->getRightChild()->getLeftChild()->createRightChild(5);
+	root->getRightChild()->createRightChild(7);
+	root->getRightChild()->getRightChild()->createRightChild(8);
+	
+	assertHeightsCorrect(root.get());
+	
+	AVLNodeT* node = root->getLeftmostDescendant();
+	for(int i = 0; i < 8; ++i) {
+		BOOST_CHECK_EQUAL(node->getElement(), i);
+		node = node->getNextNode();
+	}
+	BOOST_CHECK_EQUAL(node->getElement(), 8);
+	
+	BOOST_CHECK_EQUAL(root->getRightmostDescendant(), node);
+	
+	for(int i = 7; i >= 0; --i) {
+		node = node->getPreviousNode();
+		BOOST_CHECK_EQUAL(node->getElement(), i);
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()
