@@ -196,6 +196,7 @@ BOOST_AUTO_TEST_CASE(traversal_works) {
 		node = node->getNextNode();
 	}
 	BOOST_CHECK_EQUAL(node->getElement(), 8);
+	BOOST_CHECK_EQUAL(node->getNextNode(), (AVLNodeT*)nullptr);
 	
 	BOOST_CHECK_EQUAL(root->getRightmostDescendant(), node);
 	
@@ -203,6 +204,7 @@ BOOST_AUTO_TEST_CASE(traversal_works) {
 		node = node->getPreviousNode();
 		BOOST_CHECK_EQUAL(node->getElement(), i);
 	}
+	BOOST_CHECK_EQUAL(node->getPreviousNode(), (AVLNodeT*)nullptr);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
