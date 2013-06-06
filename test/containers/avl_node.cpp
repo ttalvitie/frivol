@@ -16,15 +16,20 @@ void assertHeightsCorrect(AVLNodeT* node) {
 	
 	AVLNodeT* left = node->getLeftChild();
 	AVLNodeT* right = node->getRightChild();
+	Idx left_height = 0;
+	if(left != nullptr) left_height = left->getHeight();
+	Idx right_height = 0;
+	if(right != nullptr) right_height = right->getHeight();
 	
 	assertHeightsCorrect(left);
 	assertHeightsCorrect(right);
 	
-	Idx height = 1;
-	if(left != nullptr) height = std::max(height, left->getHeight() + 1);
-	if(right != nullptr) height = std::max(height, right->getHeight() + 1);
+	Idx height = std::max(left_height, right_height) + 1;
 	
 	BOOST_CHECK_EQUAL(node->getHeight(), height);
+	
+	int balance_factor = (int)left_height - (int)right_height;
+	BOOST_CHECK_EQUAL(node->getBalanceFactor(), balance_factor);
 }
 
 BOOST_AUTO_TEST_CASE(basic_construction_works) {
