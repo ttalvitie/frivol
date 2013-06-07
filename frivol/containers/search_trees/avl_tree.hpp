@@ -79,6 +79,11 @@ public:
 private:
 	typedef AVLNode<ElementT> Node;
 	
+	/// Balance a node after erase or insertion to its subtree.
+	/// @returns true if the tree had to be balanced, false if it was already
+	/// balanced.
+	bool balanceNode_(Node* node);
+	
 	/// The root node of the tree. The pointer is nested through two unique_ptrs
 	/// to support moving because iterators must stay valid after move too.
 	std::unique_ptr<std::unique_ptr<Node>> root_;

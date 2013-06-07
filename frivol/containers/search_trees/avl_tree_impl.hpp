@@ -104,10 +104,18 @@ AVLIterator<ElementT> AVLTree<ElementT>::search(FuncT func) {
 template <typename ElementT>
 void AVLTree<ElementT>::erase(Iterator iter) {
 	Node* node = iter.node_;
+	
 	// If the node has at most one child, remove it. Otherwise swap with
 	// successor and retry.
 	while(!node->remove(*root_)) {
 		Node::swapNodes(node, node->getNextNode(), *root_);
+	}
+	
+	// Rebalance the tree.
+	node = node->getParent();
+	while(node != nullptr) {
+		if(balanceNode_(node)) break;
+		node = node->getParent();
 	}
 }
 
@@ -131,8 +139,39 @@ AVLIterator<ElementT> AVLTree<ElementT>::insert(Iterator iter, const ElementT& e
 			new_node = base->createRightChild(element);
 		}
 	}
-// 	
+	
+	// Rebalance the tree.
+	Node* node = new_node;
+	while(node != nullptr) {
+		balanceNode_(node);
+		node = node->getParent();
+	}
+	
 	return Iterator(*root_, new_node);
+}
+
+template <typename ElementT>
+bool AVLTree<ElementT>::balanceNode_(Node* node) {
+	int balance_factor = node->getBalanceFactor();
+	if(balance_factor == 2) {
+		if(node->getLeftChild()->getBalanceFactor() < 0) {
+			node->getLeftChild()->rotateLeft(*root_);
+		}
+		node->rotateRight(*root_);
+		
+		return true;
+	}
+	
+	if(balance_factor == -2) {
+		if(node->getRightChild()->getBalanceFactor() > 0) {
+			node->getRightChild()->rotateRight(*root_);
+		}
+		node->rotateLeft(*root_);
+		
+		return true;
+	}
+	
+	return false;
 }
 
 }
