@@ -96,6 +96,34 @@ void assertSubtreesEqual(AVLNodeT* tree1, AVLNodeT* tree2, bool should_be_root =
 	assertSubtreesEqual(tree1->getRightChild(), tree2->getRightChild(), false);
 }
 
+BOOST_AUTO_TEST_CASE(remove_subtree_works) {
+	AVLNodeT root(0);
+	root.createRightChild(1);
+	root.createLeftChild(2);
+	root.getLeftChild()->createLeftChild(3);
+	root.getRightChild()->createLeftChild(4);
+	root.getRightChild()->createRightChild(5);
+	
+	root.getLeftChild()->removeLeftSubtree();
+	{
+		AVLNodeT cmp(0);
+		cmp.createRightChild(1);
+		cmp.createLeftChild(2);
+		cmp.getRightChild()->createLeftChild(4);
+		cmp.getRightChild()->createRightChild(5);
+		assertSubtreesEqual(&root, &cmp);
+		assertHeightsCorrect(&root);
+	}
+	
+	root.removeRightSubtree();
+	{
+		AVLNodeT cmp(0);
+		cmp.createLeftChild(2);
+		assertSubtreesEqual(&root, &cmp);
+		assertHeightsCorrect(&root);
+	}
+}
+
 BOOST_AUTO_TEST_CASE(right_rotation_on_root_works) {
 	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
 	AVLNodeT* Q = root.get();

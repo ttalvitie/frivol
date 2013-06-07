@@ -31,6 +31,18 @@ AVLNode<ElementT>* AVLNode<ElementT>::createRightChild(const ElementT& element) 
 }
 
 template <typename ElementT>
+void AVLNode<ElementT>::removeLeftSubtree() {
+	left_.reset();
+	updateHeight_();
+}
+
+template <typename ElementT>
+void AVLNode<ElementT>::removeRightSubtree() {
+	right_.reset();
+	updateHeight_();
+}
+
+template <typename ElementT>
 AVLNode<ElementT>* AVLNode<ElementT>::getLeftChild() {
 	return left_.get();
 }

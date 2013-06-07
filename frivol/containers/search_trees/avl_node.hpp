@@ -32,6 +32,12 @@ public:
 	/// @returns pointer to the added node.
 	Node* createRightChild(const ElementT& element);
 	
+	/// Remove the whole left subtree of the node.
+	void removeLeftSubtree();
+	
+	/// Remove the whole right subtree of the node.
+	void removeRightSubtree();
+	
 	/// Returns pointer to the left child or nullptr if none.
 	Node* getLeftChild();
 	
