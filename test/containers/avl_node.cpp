@@ -96,31 +96,61 @@ void assertSubtreesEqual(AVLNodeT* tree1, AVLNodeT* tree2, bool should_be_root =
 	assertSubtreesEqual(tree1->getRightChild(), tree2->getRightChild(), false);
 }
 
-BOOST_AUTO_TEST_CASE(remove_subtree_works) {
-	AVLNodeT root(0);
-	root.createRightChild(1);
-	root.createLeftChild(2);
-	root.getLeftChild()->createLeftChild(3);
-	root.getRightChild()->createLeftChild(4);
-	root.getRightChild()->createRightChild(5);
+BOOST_AUTO_TEST_CASE(removal_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
+	root->createRightChild(1);
+	root->createLeftChild(2);
+	root->getLeftChild()->createLeftChild(3);
+	root->getRightChild()->createLeftChild(4);
+	root->getRightChild()->createRightChild(5);
 	
-	root.getLeftChild()->removeLeftSubtree();
+	BOOST_CHECK_EQUAL(root->getLeftChild()->getLeftChild()->remove(root), true);
 	{
-		AVLNodeT cmp(0);
-		cmp.createRightChild(1);
-		cmp.createLeftChild(2);
-		cmp.getRightChild()->createLeftChild(4);
-		cmp.getRightChild()->createRightChild(5);
-		assertSubtreesEqual(&root, &cmp);
-		assertHeightsCorrect(&root);
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(0));
+		cmp->createRightChild(1);
+		cmp->createLeftChild(2);
+		cmp->getRightChild()->createLeftChild(4);
+		cmp->getRightChild()->createRightChild(5);
+		assertSubtreesEqual(cmp.get(), cmp.get());
+		assertHeightsCorrect(cmp.get());
 	}
 	
-	root.removeRightSubtree();
+	BOOST_CHECK_EQUAL(root->getRightChild()->remove(root), false);
+	
+	BOOST_CHECK_EQUAL(root->getRightChild()->getLeftChild()->remove(root), true);
 	{
-		AVLNodeT cmp(0);
-		cmp.createLeftChild(2);
-		assertSubtreesEqual(&root, &cmp);
-		assertHeightsCorrect(&root);
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(0));
+		cmp->createRightChild(1);
+		cmp->createLeftChild(2);
+		cmp->getRightChild()->createRightChild(5);
+		assertSubtreesEqual(cmp.get(), cmp.get());
+		assertHeightsCorrect(cmp.get());
+	}
+	
+	BOOST_CHECK_EQUAL(root->getRightChild()->remove(root), true);
+	{
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(0));
+		cmp->createRightChild(5);
+		cmp->createLeftChild(2);
+		assertSubtreesEqual(cmp.get(), cmp.get());
+		assertHeightsCorrect(cmp.get());
+	}
+	
+	BOOST_CHECK_EQUAL(root->remove(root), false);
+	
+	BOOST_CHECK_EQUAL(root->getRightChild()->remove(root), true);
+	{
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(0));
+		cmp->createLeftChild(2);
+		assertSubtreesEqual(cmp.get(), cmp.get());
+		assertHeightsCorrect(cmp.get());
+	}
+	
+	BOOST_CHECK_EQUAL(root->remove(root), true);
+	{
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(2));
+		assertSubtreesEqual(cmp.get(), cmp.get());
+		assertHeightsCorrect(cmp.get());
 	}
 }
 

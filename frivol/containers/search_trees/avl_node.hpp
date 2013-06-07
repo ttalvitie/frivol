@@ -32,11 +32,12 @@ public:
 	/// @returns pointer to the added node.
 	Node* createRightChild(const ElementT& element);
 	
-	/// Remove the whole left subtree of the node.
-	void removeLeftSubtree();
-	
-	/// Remove the whole right subtree of the node.
-	void removeRightSubtree();
+	/// Remove the node from the tree if it has at most one child. It will be
+	/// replaced by the child.
+	/// @param root_ptr This unique pointer should own the root node of the
+	/// tree, and will be set to the new root if the root changes.
+	/// @returns true if the node was removed, false if the node had both children.
+	bool remove(std::unique_ptr<Node>& root_ptr);
 	
 	/// Returns pointer to the left child or nullptr if none.
 	Node* getLeftChild();
@@ -93,9 +94,10 @@ private:
 	/// changes, recurse to ancestors.
 	void updateHeight_();
 	
-	/// Returns the unique_ptr owning this node in the tree, or nullptr if this
+	/// Returns the unique_ptr owning this node in the tree, or root_ptr if this
 	/// is the root.
-	std::unique_ptr<AVLNode>* getOwner_();
+	/// @param root_ptr The reference returned if the node is root.
+	std::unique_ptr<AVLNode>& getOwner_(std::unique_ptr<Node>& root_ptr);
 	
 	/// The element stored in the node.
 	ElementT element_;
