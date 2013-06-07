@@ -19,9 +19,9 @@ Neljäs viikko kului Fortunen algoritmin apurakenteita (binäärikekoa ja AVL-pu
 
 Aluksi lähdin tekemään AVL-puuta perinteisellä tavalla (structeilla), mutta sitten huomasin että sijoittamalla osan logiikasta AVLNode-luokkaan saisi selkeämmän ja helpommin testattavan koodin. AVLNode-luokasta tuli nyt melko iso, mutta tuntuu että se on kuitenkin melko selkeä ja looginen kokonaisuus.
 
-Tähän palautukseen siis ehti AVL-puun toteutus ja toimivuuden testaus, mutta ei vielä testiä joka varmistaisi että puun tasapainotukset varmasti toimivat (ne ovat melko monimutkaisia ja mukaan on saattanut jäädä bugeja). Itse Fortunen algoritmin testit käyttävät jo uusia binäärikekoja ja AVL-puita.
+Tähän palautukseen siis ehti AVL-puun toteutus ja toimivuuden testaus, mutta ei vielä testiä joka varmistaisi että puun tasapainotukset varmasti toimivat (ne ovat melko monimutkaisia ja mukaan on saattanut jäädä bugeja). Itse Fortunen algoritmin testit käyttävät jo uusia binäärikekoja ja AVL-puita, ja pikaisesti kyhättyjen asserttien perusteella AVL-puu toteuttaa kaikissa testitapauksissa tasapainoehdot, eli olen melko varma sen tasapainossa pysymisestä.
 
-Tietorakenteet on siis melkein toteutettu, eli aikaa on vähän yli viikko jäljellä kaiken muun tekemiseen. Jäljellä on siis tekstikäyttöliittymä, visualisaatio, koko algoritmin suorituskykytestaus ja testaus- ja toteutusdokumentit. Aikataulu on siis mennyt melko tiukalle, ja jos lopuksi ilmenee vaikeita bugeja voi tulla todella kiire. Toivottavasti kuitenkin testauksen ansiosta näin ei käy.
+Tietorakenteet on siis melkein toteutettu, eli aikaa on vähän yli viikko jäljellä kaiken muun tekemiseen. Jäljellä on siis tekstikäyttöliittymä, visualisaatio, koko algoritmin suorituskykytestaus ja testaus- ja toteutusdokumentit. Aikataulu on siis mennyt melko tiukalle, ja jos lopuksi ilmenee vaikeita bugeja voi tulla todella kiire. Toivottavasti kuitenkin testauksen ansiosta näin ei käy. Teen seuraavaksi visualisaatio-ohjelman, koska sen avulla saatan löytää joitain bugeja nopeasti.
 
 Kuten viime viikkoraportissa mainitsin, ajattelin tehdä visualisaatio-ohjelman nettiselaimella toimivaksi käyttäen emscripten-kääntäjää. Koska aikataulu on melko tiukalla, jätän varauksen että jos ilmenee yllättäviä esteitä, teenkin perinteisen ohjelman jollain helpolla C/C++-kirjastolla kuten SDL\_gfx tai SFML.
 
