@@ -103,7 +103,30 @@ AVLIterator<ElementT> AVLTree<ElementT>::search(FuncT func) {
 
 template <typename ElementT>
 void AVLTree<ElementT>::erase(Iterator iter) {
-	assert(false);
+	Node* node = iter.node_;
+	while(true) {
+		// If the node is a leaf, remove it. Otherwise swap with successor or
+		// predecessor and retry.
+		Node* left = node->getLeftChild();
+		Node* right = node->getRightChild();
+		if(left == nullptr && right == nullptr) {
+			if(node->getParent() == nullptr) {
+				root_->reset();
+			} else if(node->getParent()->getLeftChild() == node) {
+				node->getParent()->removeLeftSubtree();
+			} else {
+				node->getParent()->removeRightSubtree();
+			}
+			return;
+		}
+		
+		if(left != nullptr) {
+			Node::swapNodes(node, node->getPreviousNode(), *root_);
+		} else {
+			Node::swapNodes(node, node->getNextNode(), *root_);
+		}
+		
+	}
 }
 
 template <typename ElementT>
