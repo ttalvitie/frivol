@@ -10,7 +10,7 @@ AVLNode<ElementT>::AVLNode(const ElementT& element)
 { }
 
 template <typename ElementT>
-const ElementT& AVLNode<ElementT>::getElement() {
+ElementT& AVLNode<ElementT>::getElement() {
 	return element_;
 }
 
@@ -52,7 +52,7 @@ Idx AVLNode<ElementT>::getHeight() const {
 
 template <typename ElementT>
 AVLNode<ElementT>* AVLNode<ElementT>::getLeftmostDescendant() {
-	AVLNodeT* node = this;
+	Node* node = this;
 	while(node->left_ != nullptr) {
 		node = node->left_.get();
 	}
@@ -61,7 +61,7 @@ AVLNode<ElementT>* AVLNode<ElementT>::getLeftmostDescendant() {
 
 template <typename ElementT>
 AVLNode<ElementT>* AVLNode<ElementT>::getRightmostDescendant() {
-	AVLNodeT* node = this;
+	Node* node = this;
 	while(node->right_ != nullptr) {
 		node = node->right_.get();
 	}
@@ -73,7 +73,7 @@ AVLNode<ElementT>* AVLNode<ElementT>::getPreviousNode() {
 	if(left_ != nullptr) {
 		return left_->getRightmostDescendant();
 	} else {
-		AVLNodeT* node = this;
+		Node* node = this;
 		while(true) {
 			if(node->parent_ == nullptr) return nullptr;
 			
@@ -91,7 +91,7 @@ AVLNode<ElementT>* AVLNode<ElementT>::getNextNode() {
 	if(right_ != nullptr) {
 		return right_->getLeftmostDescendant();
 	} else {
-		AVLNodeT* node = this;
+		Node* node = this;
 		while(true) {
 			if(node->parent_ == nullptr) return nullptr;
 			
@@ -119,18 +119,18 @@ int AVLNode<ElementT>::getBalanceFactor() {
 }
 
 template <typename ElementT>
-void AVLNode<ElementT>::rotateRight(std::unique_ptr<AVLNodeT>& root_ptr) {
-	AVLNodeT* top_node = parent_;
-	std::unique_ptr<AVLNodeT>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
+void AVLNode<ElementT>::rotateRight(std::unique_ptr<Node>& root_ptr) {
+	Node* top_node = parent_;
+	std::unique_ptr<Node>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
 	
 	//     X          Y     //
 	//    / \        / \    //
 	//   Y   C  ->  A   X   //
 	//  / \            / \  //
 	// A  B           B   C //
-	std::unique_ptr<AVLNodeT> X = std::move(top);
-	std::unique_ptr<AVLNodeT> Y = std::move(X->left_);
-	std::unique_ptr<AVLNodeT> B = std::move(Y->right_);
+	std::unique_ptr<Node> X = std::move(top);
+	std::unique_ptr<Node> Y = std::move(X->left_);
+	std::unique_ptr<Node> B = std::move(Y->right_);
 	
 	top = std::move(Y);
 	top->right_ = std::move(X);
@@ -148,14 +148,14 @@ void AVLNode<ElementT>::rotateRight(std::unique_ptr<AVLNodeT>& root_ptr) {
 }
 
 template <typename ElementT>
-void AVLNode<ElementT>::rotateLeft(std::unique_ptr<AVLNodeT>& root_ptr) {
-	AVLNodeT* top_node = parent_;
-	std::unique_ptr<AVLNodeT>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
+void AVLNode<ElementT>::rotateLeft(std::unique_ptr<Node>& root_ptr) {
+	Node* top_node = parent_;
+	std::unique_ptr<Node>& top = (top_node == nullptr) ? root_ptr : *getOwner_();
 	
 	// Analogous to rotateRight, see comments there.
-	std::unique_ptr<AVLNodeT> X = std::move(top);
-	std::unique_ptr<AVLNodeT> Y = std::move(X->right_);
-	std::unique_ptr<AVLNodeT> B = std::move(Y->left_);
+	std::unique_ptr<Node> X = std::move(top);
+	std::unique_ptr<Node> Y = std::move(X->right_);
+	std::unique_ptr<Node> B = std::move(Y->left_);
 	
 	top = std::move(Y);
 	top->left_ = std::move(X);
@@ -170,6 +170,23 @@ void AVLNode<ElementT>::rotateLeft(std::unique_ptr<AVLNodeT>& root_ptr) {
 	top->left_->updateHeight_();
 	top->updateHeight_();
 	if(top_node != nullptr) top_node->updateHeight_();
+}
+
+template <typename ElementT>
+void AVLNode<ElementT>::swapNodes(Node* a, Node* b, std::unique_ptr<Node>& root_ptr) {
+	std::unique_ptr<Node>& a_top = (a->parent_ == nullptr) ? root_ptr : *a->getOwner_();
+	std::unique_ptr<Node>& b_top = (b->parent_ == nullptr) ? root_ptr : *b->getOwner_();
+	
+	std::swap(a_top, b_top);
+	std::swap(a->parent_, b->parent_);
+	std::swap(a->left_, b->left_);
+	std::swap(a->right_, b->right_);
+	std::swap(a->height_, b->height_);
+	
+	if(a->left_ != nullptr) a->left_->parent_ = a;
+	if(a->right_ != nullptr) a->right_->parent_ = a;
+	if(b->left_ != nullptr) b->left_->parent_ = b;
+	if(b->right_ != nullptr) b->right_->parent_ = b;
 }
 
 template <typename ElementT>

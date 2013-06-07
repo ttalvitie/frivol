@@ -207,4 +207,31 @@ BOOST_AUTO_TEST_CASE(traversal_works) {
 	BOOST_CHECK_EQUAL(node->getPreviousNode(), (AVLNodeT*)nullptr);
 }
 
+BOOST_AUTO_TEST_CASE(swap_nodes_works) {
+	std::unique_ptr<AVLNodeT> root(new AVLNodeT(0));
+	root->createLeftChild(1);
+	root->getLeftChild()->createRightChild(2);
+	root->createRightChild(3);
+	
+	AVLNodeT::swapNodes(root.get(), root->getRightChild(), root);
+	{
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(3));
+		cmp->createLeftChild(1);
+		cmp->getLeftChild()->createRightChild(2);
+		cmp->createRightChild(0);
+		assertSubtreesEqual(root.get(), cmp.get());
+		assertHeightsCorrect(root.get());
+	}
+	
+	AVLNodeT::swapNodes(root->getRightChild(), root->getLeftChild()->getRightChild(), root);
+	{
+		std::unique_ptr<AVLNodeT> cmp(new AVLNodeT(3));
+		cmp->createLeftChild(1);
+		cmp->getLeftChild()->createRightChild(0);
+		cmp->createRightChild(2);
+		assertSubtreesEqual(root.get(), cmp.get());
+		assertHeightsCorrect(root.get());
+	}
+}
+
 BOOST_AUTO_TEST_SUITE_END()
