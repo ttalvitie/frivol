@@ -185,20 +185,26 @@ void AVLNode<ElementT>::rotateLeft(std::unique_ptr<Node>& root_ptr) {
 }
 
 template <typename ElementT>
-void AVLNode<ElementT>::swapNodes(Node* a, Node* b, std::unique_ptr<Node>& root_ptr) {
-	std::unique_ptr<Node>& a_top = (a->parent_ == nullptr) ? root_ptr : *a->getOwner_();
-	std::unique_ptr<Node>& b_top = (b->parent_ == nullptr) ? root_ptr : *b->getOwner_();
+void AVLNode<ElementT>::swapNodes(
+	Node* node1,
+	Node* node2,
+	std::unique_ptr<Node>& root_ptr
+) {
+	std::unique_ptr<Node>& top1 =
+		(node1->parent_ == nullptr) ? root_ptr : *node1->getOwner_();
+	std::unique_ptr<Node>& top2 =
+		(node2->parent_ == nullptr) ? root_ptr : *node2->getOwner_();
 	
-	std::swap(a_top, b_top);
-	std::swap(a->parent_, b->parent_);
-	std::swap(a->left_, b->left_);
-	std::swap(a->right_, b->right_);
-	std::swap(a->height_, b->height_);
+	std::swap(top1, top2);
+	std::swap(node1->parent_, node2->parent_);
+	std::swap(node1->left_, node2->left_);
+	std::swap(node1->right_, node2->right_);
+	std::swap(node1->height_, node2->height_);
 	
-	if(a->left_ != nullptr) a->left_->parent_ = a;
-	if(a->right_ != nullptr) a->right_->parent_ = a;
-	if(b->left_ != nullptr) b->left_->parent_ = b;
-	if(b->right_ != nullptr) b->right_->parent_ = b;
+	if(node1->left_ != nullptr) node1->left_->parent_ = node1;
+	if(node1->right_ != nullptr) node1->right_->parent_ = node1;
+	if(node2->left_ != nullptr) node2->left_->parent_ = node2;
+	if(node2->right_ != nullptr) node2->right_->parent_ = node2;
 }
 
 template <typename ElementT>

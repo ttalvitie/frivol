@@ -83,10 +83,10 @@ public:
 	void rotateLeft(std::unique_ptr<Node>& root_ptr);
 	
 	/// Swap the positions of two nodes in the tree.
-	/// @param a,b Pointers to the nodes to swap.
+	/// @param node1,node2 Pointers to the nodes to swap.
 	/// @param root_ptr This unique pointer should own the root node of the
 	/// tree, and will be set to the new root if the root changes.
-	static void swapNodes(Node* a, Node* b, std::unique_ptr<Node>& root_ptr);
+	static void swapNodes(Node* node1, Node* node2, std::unique_ptr<Node>& root_ptr);
 	
 private:
 	/// Recalculates the height from the heights of the children, and if it
