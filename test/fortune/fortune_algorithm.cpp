@@ -3,7 +3,7 @@
 
 #include <cmath>
 
-#include <frivol/fortune/fortune.hpp>
+#include <frivol/fortune/algorithm.hpp>
 
 using namespace frivol;
 

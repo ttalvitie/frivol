@@ -1,5 +1,5 @@
-#ifndef FRIVOL_FORTUNE_FORTUNE_HPP
-#define FRIVOL_FORTUNE_FORTUNE_HPP
+#ifndef FRIVOL_FORTUNE_ALGORITHM_HPP
+#define FRIVOL_FORTUNE_ALGORITHM_HPP
 
 #include <frivol/containers/priority_queue_concept.hpp>
 #include <frivol/fortune/beach_line.hpp>
@@ -117,6 +117,6 @@ private:
 }
 }
 
-#include "fortune_impl.hpp"
+#include "algorithm_impl.hpp"
 
 #endif

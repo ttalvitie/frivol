@@ -20,6 +20,7 @@ namespace frivol {
 /// The faces, half-edges and Voronoi vertices are identified by numerical IDs
 /// 0...count-1. The ID of the faces should be the same as their corresponding
 /// input site indices.
+/// @tparam CoordT Coordinate type of the points stored in the Voronoi diagram.
 template <typename CoordT>
 class VoronoiDiagram {
 public:
