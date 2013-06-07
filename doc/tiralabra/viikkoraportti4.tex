@@ -1,0 +1,28 @@
+\documentclass[a4paper, 11pt, finnish]{article}
+\usepackage{ucs}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[finnish]{babel}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+
+\author{Topi Talvitie}
+\title{frivol: Viikkoraportti 4}
+
+\begin{document}
+\maketitle
+
+Neljäs viikko kului Fortunen algoritmin apurakenteita (binäärikekoa ja AVL-puuta) toteuttaessa.  Binäärikeko on melko yksinkertainen rakenne, mutta senkin toteutuksessa ilmeni yllättävän paljon bugeja. Etenkin AVL-puu osoittautui työläämmäksi toteuttaa kuin muistin, ja testeistä oli huomattavasti apua sen koodaamisessa.
+
+Aluksi lähdin tekemään AVL-puuta perinteisellä tavalla (structeilla), mutta sitten huomasin että sijoittamalla osan logiikasta AVLNode-luokkaan saisi selkeämmän ja helpommin testattavan koodin. AVLNode-luokasta tuli nyt melko iso, mutta tuntuu että se on kuitenkin melko selkeä ja looginen kokonaisuus.
+
+Tähän palautukseen siis ehti AVL-puun toteutus ja toimivuuden testaus, mutta ei vielä testiä joka varmistaisi että puun tasapainotukset varmasti toimivat (ne ovat melko monimutkaisia ja mukaan on saattanut jäädä bugeja). Itse Fortunen algoritmin testit käyttävät jo uusia binäärikekoja ja AVL-puita.
+
+Tietorakenteet on siis melkein toteutettu, eli aikaa on vähän yli viikko jäljellä kaiken muun tekemiseen. Jäljellä on siis tekstikäyttöliittymä, visualisaatio, koko algoritmin suorituskykytestaus ja testaus- ja toteutusdokumentit. Aikataulu on siis mennyt melko tiukalle, ja jos lopuksi ilmenee vaikeita bugeja voi tulla todella kiire. Toivottavasti kuitenkin testauksen ansiosta näin ei käy.
+
+Kuten viime viikkoraportissa mainitsin, ajattelin tehdä visualisaatio-ohjelman nettiselaimella toimivaksi käyttäen emscripten-kääntäjää. Koska aikataulu on melko tiukalla, jätän varauksen että jos ilmenee yllättäviä esteitä, teenkin perinteisen ohjelman jollain helpolla C/C++-kirjastolla kuten SDL\_gfx tai SFML.
+
+\end{document}
