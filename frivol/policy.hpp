@@ -5,7 +5,7 @@
 #include <frivol/containers/search_tree_concept.hpp>
 
 #include <frivol/containers/priority_queues/binary_heap.hpp>
-#include <frivol/containers/search_trees/dummy_search_tree.hpp>
+#include <frivol/containers/search_trees/avl_tree.hpp>
 
 #include <frivol/geometry_traits.hpp>
 
@@ -44,7 +44,7 @@ struct Policy {
 typedef Policy<
 	double,
 	containers::priority_queues::BinaryHeap,
-	containers::search_trees::DummySearchTree
+	containers::search_trees::AVLTree
 > DefaultPolicy;
 
 }
