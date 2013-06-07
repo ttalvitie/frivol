@@ -11,4 +11,5 @@ do
 	pdflatex viikkoraportti1.tex
 	pdflatex viikkoraportti2.tex
 	pdflatex viikkoraportti3.tex
+	pdflatex viikkoraportti4.tex
 done

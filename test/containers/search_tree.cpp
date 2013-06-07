@@ -96,4 +96,6 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(search_negative_works, SearchTree, SearchTreeTypes
 	BOOST_CHECK(result == t.end());
 }
 
+// TODO: implement testing for AVL tree balancing.
+
 BOOST_AUTO_TEST_SUITE_END()
