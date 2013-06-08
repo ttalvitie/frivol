@@ -58,8 +58,15 @@ int Algorithm<PolicyT>::getVoronoiVertexCount() const {
 
 template <typename PolicyT>
 const VoronoiDiagram<typename PolicyT::Coord>& 
-	Algorithm<PolicyT>::getVoronoiDiagram() const {
+Algorithm<PolicyT>::getVoronoiDiagram() const {
 	return diagram_;
+}
+
+template <typename PolicyT>
+VoronoiDiagram<typename PolicyT::Coord> Algorithm<PolicyT>::extractVoronoiDiagram(
+	Algorithm<PolicyT>&& algorithm
+) {
+	return std::move(algorithm.diagram_);
 }
 
 template <typename PolicyT>

@@ -24,7 +24,8 @@ file(
 	fortune/fortune_algorithm.cpp
 	fortune/beach_line.cpp
 	voronoi_diagram.cpp
-	geometry_traits_float.cpp 
+	geometry_traits_float.cpp
+	frivol.cpp
 )
 add_executable(test ${TEST_SOURCES})
 

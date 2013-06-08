@@ -44,6 +44,11 @@ public:
 	/// is complete if the algorithm is finished.
 	const VoronoiDiagramT& getVoronoiDiagram() const;
 	
+	/// Moves the Voronoi diagram from the algorithm state.
+	/// @param algorithm The algorithm state rvalue from which to move the
+	/// Voronoi diagram.
+	static VoronoiDiagramT extractVoronoiDiagram(Algorithm<PolicyT>&& algorithm);
+	
 private:
 	typedef BeachLine<PolicyT> BeachLineT;
 	
