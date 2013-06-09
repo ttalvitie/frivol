@@ -1,8 +1,29 @@
 "use strict"
 
+var computeVoronoiEdges = function(sites) {
+	var sites_array = _malloc(16 * sites.length)
+	for(var sitei = 0; sitei < sites.length; ++sitei) {
+		setValue(sites_array + 16 * sitei, sites[sitei][0], "double")
+		setValue(sites_array + 16 * sitei + 8, sites[sitei][1], "double")
+	}
+	var voronoi = _frivoldraw_ComputeVoronoi(sites_array, sites.length)
+	var edges = []
+	var edge_count = _frivoldraw_GetEdgeCount(voronoi)
+	for(var edgei = 0; edgei < edge_count; ++edgei) {
+		edges.push([
+			[_frivoldraw_GetStartX(voronoi, edgei), _frivoldraw_GetStartY(voronoi, edgei)],
+			[_frivoldraw_GetEndX(voronoi, edgei), _frivoldraw_GetEndY(voronoi, edgei)],
+		])
+	}
+	_frivoldraw_FreeVoronoi(voronoi)
+	_free(sites_array)
+	return edges
+}
+
 $(document).ready(function() {
 	var max_sites = 500
 	var sites = []
+	var voronoi_edges = []
 	
 	var canvas = $("<canvas />")
 		.attr("width", window.innerWidth)
@@ -23,9 +44,22 @@ $(document).ready(function() {
 			ctx.arc(sites[sitei][0], sites[sitei][1], 3, 0, 2 * Math.PI)
 			ctx.fill()
 		}
+		
+		for(var edgei = 0; edgei < voronoi_edges.length; ++edgei) {
+			var edge = voronoi_edges[edgei]
+			ctx.beginPath()
+			ctx.moveTo(edge[0][0], edge[0][1])
+			ctx.lineTo(edge[1][0], edge[1][1])
+			ctx.stroke()
+		}
 	}
 	
-	var dragPoint = function(x, y) {
+	var sitesChanged = function() {
+		voronoi_edges = computeVoronoiEdges(sites)
+		redraw()
+	}
+	
+	var dragSite = function(x, y) {
 		// Find closest site and move it to mouse position.
 		var best = Infinity
 		var besti = -1
@@ -41,17 +75,17 @@ $(document).ready(function() {
 		if(besti != -1) {
 			sites[besti] = [x, y]
 		}
-		redraw()
+		sitesChanged()
 	}
 	
 	var mouse_down = false
 	canvas.on("mousedown", function(event) {
 		mouse_down = true
-		dragPoint(event.pageX, event.pageY)
+		dragSite(event.pageX, event.pageY)
 	})
 	canvas.on("mousemove", function(event) {
 		if(mouse_down) {
-			dragPoint(event.pageX, event.pageY)
+			dragSite(event.pageX, event.pageY)
 		}
 	})
 	canvas.on("mouseout", function() {
@@ -85,7 +119,7 @@ $(document).ready(function() {
 			sites.pop()
 		}
 		
-		redraw()
+		sitesChanged()
 	}
 	selector.on("change", siteCountChange)
 	siteCountChange()
