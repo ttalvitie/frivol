@@ -168,7 +168,6 @@ BOOST_AUTO_TEST_CASE(four_sites_three_voronoi_vertices_voronoi_diagram) {
 	BOOST_CHECK_EQUAL(diagram.getVertexCount(), 3);
 }
 
-
 BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_diagram) {
 	int n = 341;
 	containers::Array<Point<>> sites(n + 1);
@@ -199,6 +198,17 @@ BOOST_AUTO_TEST_CASE(n_gon_n_voronoi_diagram) {
 	checkCycle(diagram.getFaceBoundaryEdge(0), 3);
 	checkCycle(diagram.getFaceBoundaryEdge(3), 3);
 	checkCycle(diagram.getFaceBoundaryEdge(n), n);
+}
+
+BOOST_AUTO_TEST_CASE(hard_case_three_horizontally_and_one_on_top) {
+	containers::Array<Point<>> sites(4);
+	sites[0] = Point<>(-1, 0);
+	sites[1] = Point<>(0, 0);
+	sites[2] = Point<>(1, 0);
+	sites[3] = Point<>(0, 1);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	BOOST_CHECK_EQUAL(algo.getVoronoiDiagram().getVertexCount(), 2);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
