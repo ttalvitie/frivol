@@ -21,7 +21,7 @@ namespace frivol {
 /// 0...count-1. The ID of the faces should be the same as their corresponding
 /// input site indices.
 /// @tparam CoordT Coordinate type of the points stored in the Voronoi diagram.
-template <typename CoordT>
+template <typename CoordT = double>
 class VoronoiDiagram {
 public:
 	typedef Point<CoordT> PointT;

@@ -13,7 +13,7 @@ namespace frivol {
 /// @returns the Voronoi diagram. The face indices are equal to their
 /// corresponding input point indices.
 /// @tparam PolicyT The algorithm policy to use, instance of Policy template.
-template <typename PolicyT>
+template <typename PolicyT = DefaultPolicy>
 VoronoiDiagram<typename PolicyT::Coord> computeVoronoiDiagram(
 	const containers::Array<Point<typename PolicyT::Coord>>& sites
 );

@@ -6,7 +6,7 @@ VoronoiDiagram<typename PolicyT::Coord> computeVoronoiDiagram(
 ) {
 	fortune::Algorithm<PolicyT> algorithm(sites);
 	algorithm.finish();
-	return fortune::Algorithm<PolicyT>::extractVoronoiDiagram(algorithm);
+	return fortune::Algorithm<PolicyT>::extractVoronoiDiagram(std::move(algorithm));
 }
 
 }
