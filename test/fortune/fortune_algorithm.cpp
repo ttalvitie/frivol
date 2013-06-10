@@ -211,4 +211,15 @@ BOOST_AUTO_TEST_CASE(hard_case_three_horizontally_and_one_on_top) {
 	BOOST_CHECK_EQUAL(algo.getVoronoiDiagram().getVertexCount(), 2);
 }
 
+BOOST_AUTO_TEST_CASE(hard_case_zigzag) {
+	containers::Array<Point<>> sites(4);
+	sites[0] = Point<>(3, 0);
+	sites[1] = Point<>(2, 1);
+	sites[2] = Point<>(1, 0);
+	sites[3] = Point<>(0, 0);
+	fortune::Algorithm<> algo(sites);
+	algo.finish();
+	BOOST_CHECK_EQUAL(algo.getVoronoiDiagram().getVertexCount(), 2);
+}
+
 BOOST_AUTO_TEST_SUITE_END()
