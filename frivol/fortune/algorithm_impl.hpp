@@ -11,7 +11,8 @@ Algorithm<PolicyT>::Algorithm(const containers::Array<PointT>& sites)
 {
 	// All sites must have events in the queue.
 	for(Idx i = 0; i < sites_.getSize(); ++i) {
-		event_queue_.setPriority(getSiteEventKey_(i), sites_[i].y);
+		EventPriority priority{sites_[i].x, sites_[i].y};
+		event_queue_.setPriority(getSiteEventKey_(i), priority);
 	}
 }
 
@@ -20,7 +21,9 @@ void Algorithm<PolicyT>::step() {
 	if(event_queue_.empty()) return;
 	
 	Idx event_key;
-	std::tie(event_key, sweepline_y_) = event_queue_.pop();
+	EventPriority priority;
+	std::tie(event_key, priority) = event_queue_.pop();
+	sweepline_y_ = priority.y;
 	
 	std::pair<bool, Idx> event_info = getEventInfo_(event_key);
 	bool is_site_event = event_info.first;
@@ -67,6 +70,15 @@ VoronoiDiagram<typename PolicyT::Coord> Algorithm<PolicyT>::extractVoronoiDiagra
 	Algorithm<PolicyT>&& algorithm
 ) {
 	return std::move(algorithm.diagram_);
+}
+
+template <typename PolicyT>
+bool Algorithm<PolicyT>::EventPriority::operator<(const EventPriority& other) const {
+	if(y == other.y) {
+		return x < other.x;
+	} else {
+		return y < other.y;
+	}
 }
 
 template <typename PolicyT>
@@ -120,7 +132,8 @@ void Algorithm<PolicyT>::tryAddCircleEvent_(Idx arc_id) {
 	// Make sure that our y is monotonous.
 	event_y = std::max(event_y, sweepline_y_);
 	
-	event_queue_.setPriority(getCircleEventKey_(arc_id), event_y);
+	EventPriority priority{0, event_y};
+	event_queue_.setPriority(getCircleEventKey_(arc_id), priority);
 }
 
 template <typename PolicyT>

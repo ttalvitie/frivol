@@ -52,8 +52,22 @@ public:
 private:
 	typedef BeachLine<PolicyT> BeachLineT;
 	
-	typedef typename PolicyT::template EventPriorityQueue<CoordT> EventPriorityQueueT;
-	BOOST_CONCEPT_ASSERT((containers::PriorityQueueConcept<EventPriorityQueueT, CoordT>));
+	/// Priority of events in the event queue.
+	struct EventPriority {
+		/// In site events, the X coordinate of the site. In circle events does
+		/// not matter.
+		CoordT x;
+		
+		/// The sweepline Y coordinate at which the event happens.
+		CoordT y;
+		
+		/// Ordering of events, primarily by y and secondarily by x to handle
+		/// cases of sites on the same horizontal line correctly.
+		bool operator<(const EventPriority& other) const;
+	};
+	
+	typedef typename PolicyT::template EventPriorityQueue<EventPriority> EventPriorityQueueT;
+	BOOST_CONCEPT_ASSERT((containers::PriorityQueueConcept<EventPriorityQueueT, EventPriority>));
 	
 	typedef GeometryTraits<CoordT> GeometryTraitsT;
 	
