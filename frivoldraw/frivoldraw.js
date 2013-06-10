@@ -73,7 +73,7 @@ $(document).ready(function() {
 			}
 		}
 		if(besti != -1) {
-			sites[besti] = [x, y]
+			sites[besti] = [x + Math.random(), y + Math.random()]
 		}
 		sitesChanged()
 	}
