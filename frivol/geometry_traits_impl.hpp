@@ -10,13 +10,6 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 	CoordT topy,
 	bool positive_big
 ) {
-	if(a.y > topy - epsilon) {
-		return a.x;
-	}
-	if(b.y > topy - epsilon) {
-		return b.x;
-	}
-	
 	// Reduce to the case where a = (0, 0), b = (u, v), topy = h.
 	CoordT u = b.x - a.x;
 	CoordT v = b.y - a.y;
@@ -34,6 +27,14 @@ CoordT GeometryTraitsFloat<CoordT>::getBreakpointX(
 				return -std::numeric_limits<CoordT>::infinity();
 			}
 		}
+	}
+	
+	// To ensure numerical stability, handle degenerate cases separately.
+	if(a.y > topy - epsilon) {
+		return a.x;
+	}
+	if(b.y > topy - epsilon) {
+		return b.x;
 	}
 	
 	// Otherwise, we need to solve x from:
