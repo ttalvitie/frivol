@@ -99,7 +99,7 @@ $(document).ready(function() {
 		.attr("type", "number")
 		.attr("min", "0")
 		.attr("max", max_sites)
-		.attr("value", "6")
+		.attr("value", "30")
 		.css("position", "fixed")
 		.css("top", "0px")
 		.css("left", "0px")
