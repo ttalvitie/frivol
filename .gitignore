@@ -21,9 +21,12 @@
 CMakeCache.txt
 CMakeFiles
 cmake_install.cmake
+Makefile
 
 test/test
-test/Makefile
 doc/doxygen/html/
 doc/doxygen/latex/
 
+frivoldraw/frivoldraw_lib.js
+perftest/perftest
+perftest/*.txt
