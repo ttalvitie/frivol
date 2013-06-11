@@ -19,6 +19,6 @@ file(
 	GLOB TEST_SOURCES
 	perftest.cpp
 )
-add_executable(test ${TEST_SOURCES})
+add_executable(perftest ${TEST_SOURCES})
 
-target_link_libraries(test ${Boost_LIBRARIES})
+target_link_libraries(perftest ${Boost_LIBRARIES})

@@ -11,7 +11,7 @@
 template <typename FuncT>
 double getExecutionTime(FuncT func, double time) {
 	auto start = std::chrono::high_resolution_clock::now();
-	auto elapsed = 0;
+	double elapsed = 0;
 	int times = 0;
 	while(elapsed < time) {
 		func();
@@ -32,34 +32,42 @@ int main() {
 	std::mt19937 rng;
 	std::uniform_real_distribution<double> dist(0, 1);
 	
-	for(int sitecount = 0; sitecount < 10000; ++sitecount) {
-		std::cout << "Site count " << sitecount << ".\n";
+	int sitecount = 0;
+	int sitecounts = 720;
+	for(int i = 0; i < sitecounts; ++i) {
+		// Increase sitecount exponentially, with 1% increases.
+		int old_sitecount = sitecount;
+		sitecount = 101 * sitecount / 100;
+		if(sitecount <= old_sitecount) sitecount = old_sitecount + 1;
+		
+		std::cout << 100 * i / sitecounts << "%: ";
+		std::cout << "Testing with site count " << sitecount << "\n";
+		
 		// Generate the sites with random sampling.
 		frivol::containers::Array<frivol::Point<>> sites(sitecount);
 		for(int sitei = 0; sitei < sitecount; ++sitei) {
 			sites[sitei] = frivol::Point<>(dist(rng), dist(rng));
 		}
 		
-		// Run the algorithms and save results.
-		frivol::VoronoiDiagram<> default_diagram(0);
-		frivol::VoronoiDiagram<> dummy_diagram(0);
-		
 		double default_runtime = getExecutionTime([&]() {
-			default_diagram = frivol::computeVoronoiDiagram(sites);
+			frivol::computeVoronoiDiagram(sites);
 		}, 0.3);
+		default_out << sitecount << " " << default_runtime << "\n";
+		default_out.flush();
+		
+		// Don't run dummy for too large inputs.
+		if(sitecount > 2500) continue;
+		
 		double dummy_runtime = getExecutionTime([&]() {
 			typedef frivol::Policy<
 				double,
 				frivol::containers::priority_queues::DummyPriorityQueue,
 				frivol::containers::search_trees::DummySearchTree
 			> Policy;
-			default_diagram = frivol::computeVoronoiDiagram<Policy>(sites);
+			frivol::computeVoronoiDiagram<Policy>(sites);
 		}, 0.3);
-		
-		default_out << sitecount << " " << default_runtime << "\n";
 		dummy_out << sitecount << " " << dummy_runtime << "\n";
 		
-		default_out.flush();
 		dummy_out.flush();
 	}
 	
