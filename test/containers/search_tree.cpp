@@ -96,6 +96,41 @@ BOOST_AUTO_TEST_CASE_TEMPLATE(search_negative_works, SearchTree, SearchTreeTypes
 	BOOST_CHECK(result == t.end());
 }
 
-// TODO: implement testing for AVL tree balancing.
+void checkAVLTreeBalanced(AVLTree<int>& tree) {
+	int size = 0;
+	int max_queries = 0;
+	for(auto iter = tree.begin(); iter != tree.end(); ++iter) {
+		int queries = 0;
+		auto find_iter = tree.search([&](AVLTree<int>::Iterator search_iter) {
+			++queries;
+			return *iter - *search_iter;
+		});
+		BOOST_CHECK(find_iter != tree.end());
+		max_queries = std::max(max_queries, queries);
+		
+		++size;
+	}
+	
+	// There should be only a 2 * log_2(size + 1) queries.
+	BOOST_CHECK(1 << max_queries <= (size + 1) * (size + 1));
+}
+
+BOOST_AUTO_TEST_CASE(avl_tree_balanced_when_adding_in_increasing_order) {
+	AVLTree<int> tree;
+	checkAVLTreeBalanced(tree);
+	for(int i = 0; i < 1000; ++i) {
+		tree.insert(tree.end(), i);
+		checkAVLTreeBalanced(tree);
+	}
+}
+
+BOOST_AUTO_TEST_CASE(avl_tree_balanced_when_adding_in_decreasing_order) {
+	AVLTree<int> tree;
+	checkAVLTreeBalanced(tree);
+	for(int i = 999; i >= 0; --i) {
+		tree.insert(tree.begin(), i);
+		checkAVLTreeBalanced(tree);
+	}
+}
 
 BOOST_AUTO_TEST_SUITE_END()
