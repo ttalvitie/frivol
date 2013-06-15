@@ -31,6 +31,7 @@ $(document).ready(function() {
 		.css("position", "fixed")
 		.css("top", "0px")
 		.css("left", "0px")
+	canvas.on("selectstart", function() { return false })
 	var ctx = canvas[0].getContext("2d")
 	$("body").append(canvas)
 	
