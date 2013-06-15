@@ -74,21 +74,21 @@ Point<CoordT> GeometryTraitsFloat<CoordT>::getCircumcenter(
 	const PointT& b,
 	const PointT& c
 ) {
-	// TODO: temporary code directly from Maple, clarify and optimize.
-	CoordT x = 0.5 * (
-			-a.y*b.x*b.x+b.x*b.x*c.y-b.y*c.y*c.y+b.y*a.y*a.y+a.y*c.x*c.x-b.y*b.y*a.y
-			-b.y*c.x*c.x+a.x*a.x*b.y-c.y*a.y*a.y+b.y*b.y*c.y-a.x*a.x*c.y+c.y*c.y*a.y
-		) / (
-			a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x
-		);
-	CoordT y = -0.5 * (
-			-a.x*b.x*b.x-a.x*b.y*b.y+a.x*c.x*c.x+a.x*c.y*c.y+a.x*a.x*b.x-a.x*a.x*c.x
-			+a.y*a.y*b.x-a.y*a.y*c.x-b.x*c.x*c.x-b.x*c.y*c.y+b.x*b.x*c.x+b.y*b.y*c.x
-		) / (
-			a.x*b.y-a.x*c.y-a.y*b.x+a.y*c.x+b.x*c.y-b.y*c.x
-		);
+	// Reduce to case where a = 0, b = (x1, y1), c = (x2, y2)
+	// We get equation (x-x1)^2 + (y-y1)^2 = x^2 + y^2 = (x-x2)^2 + (y-y2)^2.
+	// Solving both equation signs yields x1*x + y1*y = (x1^2 + y1^2) / 2 and
+	// similarly for x2 and y2.
+	CoordT x1 = b.x - a.x;
+	CoordT y1 = b.y - a.y;
+	CoordT x2 = c.x - a.x;
+	CoordT y2 = c.y - a.y;
 	
-	return PointT(x, y);
+	// Solving the pair of linear equations yields the following solution.
+	CoordT divisor = 2 * (x1 * y2 - y1 * x2);
+	CoordT x = (y1 * (y2 * y1 - x2 * x2) + y2 * (x1 * x1 - y2 * y1)) / divisor;
+	CoordT y = (x1 * (y2 * y2 - x1 * x2) + x2 * (x1 * x2 - y1 * y1)) / divisor;
+	
+	return PointT(a.x + x, a.y + y);
 }
 
 template <typename CoordT>
