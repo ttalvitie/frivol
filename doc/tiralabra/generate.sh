@@ -13,5 +13,6 @@ do
 	pdflatex viikkoraportti3.tex
 	pdflatex viikkoraportti4.tex
 	pdflatex toteutusdokumentti.tex
-	pdflatex testausdokumentti
+	pdflatex testausdokumentti.tex
+	pdflatex kayttoohje.tex
 done

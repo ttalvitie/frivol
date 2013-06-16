@@ -23,14 +23,12 @@ Pistejoukon Voronoi-diagrammilla tarkoitetaan tason jakoa maksimaalisiin alueisi
 \caption{Esimerkki pistejoukosta ja sen Voronoi-diagrammista.}
 \end{figure}
 
-Projektissa toteutetaan kirjasto annetun pistejoukon Voronoi-diagrammien laskentaan. Kirjaston nimi on \emph{frivol} eli Friendly Voronoi Diagram Library. Tämän lisäksi toteutetaan ohjelma \emph{frivoltool} joka kirjastoa käyttäen laskee annetun pistejoukon Voronoi-diagrammin ja toinen ohjelma \emph{frivoldraw}, joka osaa piirtää kuvan Voronoi-diagrammista.
+Projektissa toteutetaan kirjasto annetun pistejoukon Voronoi-diagrammien laskentaan. Kirjaston nimi on \emph{frivol} eli Friendly Voronoi Diagram Library. Tämän lisäksi toteutetaan ohjelma \emph{frivoldraw}, joka osaa piirtää kuvan Voronoi-diagrammista.
 
 \section*{Syöte ja tuloste}
 Kirjaston ulkorajapinta on vain yksi funktio, joka ottaa syötteenä taulukon tason pisteitä ja palauttaa taulukon, jossa on vastaavat Voronoi-diagrammin alueet. Alueet palautetaan linkitettynä rakenteena, jossa vierekkäiset alueet, särmät ja solmut on aina linkitetty molempiin suuntiin.
 
-\emph{frivoltool} on yksinkertainen ohjelma joka käärii kirjaston funktion komentorivikäyttöön sopivaksi, eli syöte saadaan ja tuloste annetaan merkkijonomuodossa.
-
-\emph{frivoldraw} ottaa syötteen samalla tavalla kuin \emph{frivoltool}, mutta tulosteen kirjoittamisen merkkijonomuodossa sijaan se piirtää siitä kuvan, parametrien mukaan joko suoraan avattavaan ikkunaan tai kuvatiedostoon. Kuvassa näkyy pistejoukko ja Voronoi-diagrammin alueiden reunat.
+\emph{frivoldraw}issa syöte annetaan piirtämällä pistejoukko, ja se piirtää tämän pistejoukon Voronoi-diagrammin. Pisteitä liikuttaessa näkee reaaliajassa, miten diagrammi muuttuu.
 
 \section*{Algoritmi}
 \emph{frivol} laskee pistejoukon Voronoi-diagrammin käyttämällä Fortunen algoritmia, joka vie $O(n \log n)$ aikaa ja $O(n)$ tilaa, kun pisteiden lukumäärä on $n$. Fortunen algoritmissa pyyhkäisyviiva kulkee tason yli, ja samalla ylläpidetään toista pyyhkäisykäyrää joka koostuu paraabeleista jotka kasvavat muodostamaan diagrammin alueita. Pyyhkäisyviiva kohtaa matkallaan muutostapahtumia, eli uusien solmujen kohtaamisia ja vanhojen paraabelipätkien poistoja. Näitä tapahtumia on $O(n)$ kappaletta. Jokainen tapahtuman käsittely tarvitsee vain $O(1)$ kyselyä/muutosta paraabelikäyrältä, mutta vaatii sen olevan järjestetty.\cite{fortunepaperi}\cite{compgeomkirja}
