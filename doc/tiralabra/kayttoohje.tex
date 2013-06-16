@@ -16,7 +16,9 @@
 \maketitle
 
 \section*{frivol}
-frivol-kirjaston käyttö on helppoa, sillä se koostuu pelkästään headeritiedostoista, eli mitään DLL:iä ei tarvitse liittää. Kirjasto löytyy repon frivol/-hakemistosta, ja vaatii että kyseinen hakemisto on kääntäjän headerinetsintäpolussa (esimerkiksi GCC:ssä -I<hakemisto joka sisältää frivol/-hakemiston>). Funktio, jolla saa laskettua annetun pistejoukon Voronoi-diagrammin löytyy tiedostosta frivol/frivol.hpp.
+frivol-kirjaston käyttö on helppoa, sillä se koostuu pelkästään headeritiedostoista, eli mitään DLL:iä ei tarvitse liittää. Kirjasto löytyy frivol/-hakemistosta, ja vaatii että kyseinen hakemisto on kääntäjän headerinetsintäpolussa (esimerkiksi GCC:ssä ''-I<hakemisto joka sisältää frivol/-hakemiston>''). Kirjasto on C++11-kirjasto, joten käännös pitää suorittaa C++11-tilassa (esimerkiksi GCC:ssä ''-std=c++0x'').
+
+Funktio, jolla saa laskettua annetun pistejoukon Voronoi-diagrammin löytyy tiedostosta frivol/frivol.hpp. Kirjasto ei vielä käsittele kaikkia mahdollisia syötteitä oikein (ks. toteutusdokumentti -> Puutteet). Tämän takia ei ole suositeltavaa käyttää kirjastoa virheille herkissä tarkoituksissa.
 
 \section*{test ja perftest}
 Testikokoelma ja suorituskykytestiohjelma löytyvät hakemistoista test/ ja perftest/. Nämä käännetään CMakella, hakemistojen README.md:ssä tarkemmat ohjeet.
