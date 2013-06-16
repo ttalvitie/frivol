@@ -56,7 +56,7 @@ private:
 	friend class AVLTree<ElementT>;
 };
 
-/// Implementation of SearchTreeConcept using AVL tree. TODO: implement balacing
+/// Implementation of SearchTreeConcept using AVL tree.
 /// @tparam ElementT Type of elements stored in the search tree.
 template <typename ElementT>
 class AVLTree {
